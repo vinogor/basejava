@@ -12,9 +12,36 @@ public class ArrayStorage {
         pointerToFirstNull = 0;
     }
 
+    void update(Resume r) {
+        if (!doesResumeExist(r.uuid)) {
+            System.out.println("ERROR: такого резюме НЕ существует");
+        }
+        else {
+            for (int i = 0; i < pointerToFirstNull; i++) {
+                if (storage[i].uuid.equals(r.uuid)) {
+                    storage[i] = r;
+                }
+            }
+        }
+    }
+
+    private boolean doesResumeExist(String uuid) {
+        for (int i = 0; i < pointerToFirstNull; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void save(Resume r) {
-        storage[pointerToFirstNull] = r;
-        pointerToFirstNull++;
+        if (doesResumeExist(r.uuid)) {
+            System.out.println("ERROR: такое резюме УЖЕ существует");
+        }
+        else {
+            storage[pointerToFirstNull] = r;
+            pointerToFirstNull++;
+        }
     }
 
     Resume get(String uuid) {
@@ -27,11 +54,16 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < pointerToFirstNull; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                System.arraycopy(storage, i + 1, storage, i, pointerToFirstNull - i + 1);
-                pointerToFirstNull--;
-                break;
+        if (!doesResumeExist(uuid)) {
+            System.out.println("ERROR: такого резюме НЕ существует");
+        }
+        else {
+            for (int i = 0; i < pointerToFirstNull; i++) {
+                if (storage[i].uuid.equals(uuid)) {
+                    System.arraycopy(storage, i + 1, storage, i, pointerToFirstNull - i + 1);
+                    pointerToFirstNull--;
+                    break;
+                }
             }
         }
     }

@@ -4,7 +4,8 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private static final int STORAGE_LIMIT = 10000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int pointerToFirstNull = 0;
 
     void clear() {
@@ -13,15 +14,16 @@ public class ArrayStorage {
     }
 
     void update(Resume r) {
-        if (findResumeNumber(r.uuid) == 10000) {
+        int rn = findResumeNumber(r.uuid);
+        if (rn == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
-            storage[findResumeNumber(r.uuid)] = r;
+            storage[rn] = r;
         }
     }
 
     void save(Resume r) {
-        if (findResumeNumber(r.uuid) != 10000) {
+        if (findResumeNumber(r.uuid) != -1) {
             System.out.println("ERROR: такое резюме УЖЕ существует");
         } else {
             storage[pointerToFirstNull] = r;
@@ -30,19 +32,21 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < pointerToFirstNull; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return storage[i];
-            }
+        int rn = findResumeNumber(uuid);
+        if (rn == -1) {
+            return null;
         }
-        return null;
+        else {
+            return storage[rn];
+        }
     }
 
     void delete(String uuid) {
-        if (findResumeNumber(uuid) == 10000) {
+        int rn = findResumeNumber(uuid);
+        if (rn == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
-            System.arraycopy(storage, findResumeNumber(uuid) + 1, storage, findResumeNumber(uuid), pointerToFirstNull - findResumeNumber(uuid) + 1);
+            System.arraycopy(storage, rn + 1, storage, rn, pointerToFirstNull - rn);
             pointerToFirstNull--;
         }
     }
@@ -61,6 +65,6 @@ public class ArrayStorage {
                 return i;
             }
         }
-        return 10000;
+        return -1;
     }
 }

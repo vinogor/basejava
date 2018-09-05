@@ -18,7 +18,6 @@ public class ArrayStorage {
         } else {
             storage[findResumeNumber(r.uuid)] = r;
         }
-
     }
 
     void save(Resume r) {

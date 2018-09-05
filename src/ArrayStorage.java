@@ -13,32 +13,18 @@ public class ArrayStorage {
     }
 
     void update(Resume r) {
-        if (!doesResumeExist(r.uuid)) {
+        if (findResumeNumber(r.uuid) == 10000) {
             System.out.println("ERROR: такого резюме НЕ существует");
+        } else {
+            storage[findResumeNumber(r.uuid)] = r;
         }
-        else {
-            for (int i = 0; i < pointerToFirstNull; i++) {
-                if (storage[i].uuid.equals(r.uuid)) {
-                    storage[i] = r;
-                }
-            }
-        }
-    }
 
-    private boolean doesResumeExist(String uuid) {
-        for (int i = 0; i < pointerToFirstNull; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     void save(Resume r) {
-        if (doesResumeExist(r.uuid)) {
+        if (findResumeNumber(r.uuid) != 10000) {
             System.out.println("ERROR: такое резюме УЖЕ существует");
-        }
-        else {
+        } else {
             storage[pointerToFirstNull] = r;
             pointerToFirstNull++;
         }
@@ -54,17 +40,11 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        if (!doesResumeExist(uuid)) {
+        if (findResumeNumber(uuid) == 10000) {
             System.out.println("ERROR: такого резюме НЕ существует");
-        }
-        else {
-            for (int i = 0; i < pointerToFirstNull; i++) {
-                if (storage[i].uuid.equals(uuid)) {
-                    System.arraycopy(storage, i + 1, storage, i, pointerToFirstNull - i + 1);
-                    pointerToFirstNull--;
-                    break;
-                }
-            }
+        } else {
+            System.arraycopy(storage, findResumeNumber(uuid) + 1, storage, findResumeNumber(uuid), pointerToFirstNull - findResumeNumber(uuid) + 1);
+            pointerToFirstNull--;
         }
     }
 
@@ -74,5 +54,14 @@ public class ArrayStorage {
 
     int size() {
         return pointerToFirstNull;
+    }
+
+    private int findResumeNumber(String uuid) {
+        for (int i = 0; i < pointerToFirstNull; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return i;
+            }
+        }
+        return 10000;
     }
 }

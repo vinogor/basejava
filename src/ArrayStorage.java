@@ -14,39 +14,44 @@ public class ArrayStorage {
     }
 
     void update(Resume r) {
-        int rn = findResumeNumber(r.uuid);
-        if (rn == -1) {
+        int index = findResumeNumber(r.uuid);
+        if (index == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
-            storage[rn] = r;
+            storage[index] = r;
         }
     }
 
     void save(Resume r) {
-        if (findResumeNumber(r.uuid) != -1) {
-            System.out.println("ERROR: такое резюме УЖЕ существует");
+        if (pointerToFirstNull == STORAGE_LIMIT - 1) {
+            System.out.println("ERROR: хранилище резюме полностью заполнено");
         } else {
-            storage[pointerToFirstNull] = r;
-            pointerToFirstNull++;
+            if (findResumeNumber(r.uuid) != -1) {
+                System.out.println("ERROR: такое резюме УЖЕ существует");
+            } else {
+                storage[pointerToFirstNull] = r;
+                pointerToFirstNull++;
+            }
         }
     }
 
     Resume get(String uuid) {
-        int rn = findResumeNumber(uuid);
-        if (rn == -1) {
+        int index = findResumeNumber(uuid);
+        if (index == -1) {
+            System.out.println("ERROR: такого резюме НЕ существует");
             return null;
-        }
-        else {
-            return storage[rn];
+        } else {
+            return storage[index];
         }
     }
 
     void delete(String uuid) {
-        int rn = findResumeNumber(uuid);
-        if (rn == -1) {
+        int index = findResumeNumber(uuid);
+        if (index == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
-            System.arraycopy(storage, rn + 1, storage, rn, pointerToFirstNull - rn);
+            System.arraycopy(storage, index + 1, storage, index, pointerToFirstNull - index);
+            storage[pointerToFirstNull - 1] = null;
             pointerToFirstNull--;
         }
     }

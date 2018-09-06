@@ -4,7 +4,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private static final int STORAGE_LIMIT = 10000;
+    private static final int STORAGE_LIMIT = 3;
     private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int pointerToFirstNull = 0;
 
@@ -23,7 +23,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (pointerToFirstNull == STORAGE_LIMIT - 1) {
+        if (pointerToFirstNull == STORAGE_LIMIT) {
             System.out.println("ERROR: хранилище резюме полностью заполнено");
         } else {
             if (findResumeNumber(r.uuid) != -1) {
@@ -50,7 +50,7 @@ public class ArrayStorage {
         if (index == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
-            System.arraycopy(storage, index + 1, storage, index, pointerToFirstNull - index);
+            storage[index] = storage[pointerToFirstNull-1];
             storage[pointerToFirstNull - 1] = null;
             pointerToFirstNull--;
         }

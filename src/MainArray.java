@@ -24,7 +24,7 @@ public class MainArray {
                 System.out.println("Неверная команда.");
                 continue;
             }
-            String uuid = null;
+            String uuid = null; 
             if (params.length == 2) {
                 uuid = params[1].intern();
             }

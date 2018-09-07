@@ -1,20 +1,24 @@
+package storage;
+
+import model.Resume;
+
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
+public class ArrayStorage implements Storage {
     private static final int STORAGE_LIMIT = 3;
     private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int pointerToFirstNull = 0;
 
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, pointerToFirstNull, null);
         pointerToFirstNull = 0;
     }
 
-    void update(Resume r) {
-        int index = findResumeNumber(r.uuid);
+    public void update(Resume r) {
+        int index = findResumeNumber(r.getUuid());
         if (index == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
@@ -22,11 +26,11 @@ public class ArrayStorage {
         }
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         if (pointerToFirstNull == STORAGE_LIMIT) {
             System.out.println("ERROR: хранилище резюме полностью заполнено");
         } else {
-            if (findResumeNumber(r.uuid) != -1) {
+            if (findResumeNumber(r.getUuid()) != -1) {
                 System.out.println("ERROR: такое резюме УЖЕ существует");
             } else {
                 storage[pointerToFirstNull] = r;
@@ -35,7 +39,7 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int index = findResumeNumber(uuid);
         if (index == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
@@ -45,7 +49,7 @@ public class ArrayStorage {
         }
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int index = findResumeNumber(uuid);
         if (index == -1) {
             System.out.println("ERROR: такого резюме НЕ существует");
@@ -56,17 +60,17 @@ public class ArrayStorage {
         }
     }
 
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, pointerToFirstNull);
     }
 
-    int size() {
+    public int size() {
         return pointerToFirstNull;
     }
 
     private int findResumeNumber(String uuid) {
         for (int i = 0; i < pointerToFirstNull; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }

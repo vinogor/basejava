@@ -4,13 +4,9 @@ import model.Resume;
 
 import java.util.Arrays;
 
-/**
- * Array based storage for Resumes
- */
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 3;
+    protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    // public Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int pointerToFirstNull = 0;
 
     public int size() {
@@ -19,7 +15,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int index = findResumeNumber(uuid);
-        if (index == -1) {
+        if (index < 0) {
             System.out.println("ERROR: такого резюме НЕ существует");
             return null;
         } else {
@@ -27,5 +23,25 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    public void clear() {
+        Arrays.fill(storage, 0, pointerToFirstNull, null);
+        pointerToFirstNull = 0;
+    }
+
+    public void update(Resume r) {
+        int index = findResumeNumber(r.getUuid());
+        if (index < 0) {
+            System.out.println("ERROR: такого резюме НЕ существует");
+        } else {
+            storage[index] = r;
+        }
+    }
+
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, pointerToFirstNull);
+    }
+
     protected abstract int findResumeNumber(String uuid);
+    public abstract void save(Resume r);
+
 }

@@ -1,4 +1,5 @@
 import model.Resume;
+import storage.SortedArrayStorage;
 import storage.Storage;
 import storage.ArrayStorage;
 
@@ -12,7 +13,8 @@ import java.io.InputStreamReader;
  */
 
 public class MainArray {
-    private final static Storage ARRAY_STORAGE = new ArrayStorage();
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
+    // private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -24,7 +26,7 @@ public class MainArray {
                 System.out.println("Неверная команда.");
                 continue;
             }
-            String uuid = null; 
+            String uuid = null;
             if (params.length == 2) {
                 uuid = params[1].intern();
             }
@@ -52,12 +54,12 @@ public class MainArray {
                     ARRAY_STORAGE.clear();
                     printAll();
                     break;
-                case "update":
+  /*              case "update":
                     r = new Resume();
                     r.setUuid(uuid);
                     ARRAY_STORAGE.update(r);
                     printAll();
-                    break;
+                    break;*/
                 case "exit":
                     return;
                 default:

@@ -43,5 +43,5 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int findResumeNumber(String uuid);
     public abstract void save(Resume r);
-
+    public abstract void delete(String uuid);
 }

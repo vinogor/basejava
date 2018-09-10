@@ -12,19 +12,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (pointerToFirstNull == STORAGE_LIMIT) {
             System.out.println("ERROR: хранилище резюме полностью заполнено");
         } else {
-            if (index > 0) {
+            if (index > -1) {
                 System.out.println("ERROR: такое резюме УЖЕ существует");
             } else {
-                if (index == -1) {
-                    System.arraycopy(storage, 0, storage, 1, pointerToFirstNull);
-                    storage[0] = r;
-                } else {
-                    index = (-(index + 1));
-                    System.arraycopy(storage, index, storage, index+1, pointerToFirstNull-index);
-                    storage[index] = r;
-                }
-                pointerToFirstNull++;
+                index = (-(index + 1));
+                System.arraycopy(storage, index, storage, index + 1, pointerToFirstNull - index);
+                storage[index] = r;
             }
+            pointerToFirstNull++;
         }
     }
 

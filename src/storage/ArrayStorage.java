@@ -4,28 +4,12 @@ import model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void save(Resume r) {
-        if (pointerToFirstNull == STORAGE_LIMIT) {
-            System.out.println("ERROR: хранилище резюме полностью заполнено");
-        } else {
-            if (findResumeNumber(r.getUuid()) != -1) {
-                System.out.println("ERROR: такое резюме УЖЕ существует");
-            } else {
-                storage[pointerToFirstNull] = r;
-                pointerToFirstNull++;
-            }
-        }
+    public void reallySave(Resume r, int index) {
+        storage[pointerToFirstNull] = r;
     }
 
-    public void delete(String uuid) {
-        int index = findResumeNumber(uuid);
-        if (index == -1) {
-            System.out.println("ERROR: такого резюме НЕ существует");
-        } else {
-            storage[index] = storage[pointerToFirstNull - 1];
-            storage[pointerToFirstNull - 1] = null;
-            pointerToFirstNull--;
-        }
+    public void reallyDelete(String uuid, int index) {
+        storage[index] = storage[pointerToFirstNull - 1];
     }
 
     protected int findResumeNumber(String uuid) {

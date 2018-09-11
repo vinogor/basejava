@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 
 public class MainArray {
     private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
-    // private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
+    // private final static Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -54,12 +54,12 @@ public class MainArray {
                     ARRAY_STORAGE.clear();
                     printAll();
                     break;
-  /*              case "update":
+                case "update":
                     r = new Resume();
                     r.setUuid(uuid);
                     ARRAY_STORAGE.update(r);
                     printAll();
-                    break;*/
+                    break;
                 case "exit":
                     return;
                 default:

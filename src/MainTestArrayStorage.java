@@ -7,7 +7,7 @@ import storage.Storage;
  * Test for your storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-     private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
     // private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
@@ -28,13 +28,10 @@ public class MainTestArrayStorage {
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
         printAll();
 
- //     System.out.println("Index of r2: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0 , ARRAY_STORAGE.size(), r2));
-
-
-        // переделать тестирование UPDATE
-//        r3.setUuid("uuid333");
-//        ARRAY_STORAGE.update(r3);
-//        printAll();
+        final Resume r4 = new Resume();
+        r4.setUuid("uuid1");
+        ARRAY_STORAGE.update(r4);
+        printAll();
 
         ARRAY_STORAGE.delete(r1.getUuid());
         printAll();

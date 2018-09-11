@@ -10,33 +10,29 @@ public abstract class AbstractArrayStorage implements Storage {
     protected int pointerToFirstNull = 0;
 
     public void save(Resume r) {
-        int index = findResumeNumber(r.getUuid());
+        final int index = findResumeNumber(r.getUuid());
         if (pointerToFirstNull == STORAGE_LIMIT) {
             System.out.println("ERROR: хранилище резюме полностью заполнено");
         } else {
             if (index > -1) {
                 System.out.println("ERROR: такое резюме УЖЕ существует");
             } else {
-                reallySave(r, index);
+                doSave(r, index);
                 pointerToFirstNull++;
             }
         }
     }
 
-    public abstract void reallySave(Resume r, int index);
-
     public void delete(String uuid) {
-        int index = findResumeNumber(uuid);
+        final int index = findResumeNumber(uuid);
         if (index < 0) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
-            reallyDelete(uuid, index);
+            doDelete(index);
             storage[pointerToFirstNull - 1] = null;
             pointerToFirstNull--;
         }
     }
-
-    public abstract void reallyDelete(String uuid, int index);
 
     public int size() {
         return pointerToFirstNull;
@@ -62,7 +58,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume r) {
-        int index = findResumeNumber(r.getUuid());
+        final int index = findResumeNumber(r.getUuid());
         if (index < 0) {
             System.out.println("ERROR: такого резюме НЕ существует");
         } else {
@@ -71,4 +67,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     protected abstract int findResumeNumber(String uuid);
+    protected abstract void doSave(Resume r, int index);
+    protected abstract void doDelete(int index);
 }

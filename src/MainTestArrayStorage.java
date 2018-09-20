@@ -1,5 +1,4 @@
 import model.Resume;
-import storage.ArrayStorage;
 import storage.SortedArrayStorage;
 import storage.Storage;
 
@@ -11,12 +10,9 @@ public class MainTestArrayStorage {
     // private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
-        final Resume r1 = new Resume();
-        r1.setUuid("uuid3");
-        final Resume r2 = new Resume();
-        r2.setUuid("uuid2");
-        final Resume r3 = new Resume();
-        r3.setUuid("uuid1");
+        final Resume r1 = new Resume("uuid3");
+        final Resume r2 = new Resume("uuid2");
+        final Resume r3 = new Resume("uuid1");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -28,8 +24,7 @@ public class MainTestArrayStorage {
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
         printAll();
 
-        final Resume r4 = new Resume();
-        r4.setUuid("uuid1");
+        final Resume r4 = new Resume("uuid1");
         ARRAY_STORAGE.update(r4);
         printAll();
 

@@ -12,26 +12,23 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int pointerToFirstNull = 0;
 
-    public void save(Resume r) {
-        final int index = findResumeNumber(r.getUuid());
+    public void save(Resume resume) {
+        final int index = findResumeIndex(resume.getUuid());
         if (pointerToFirstNull == STORAGE_LIMIT) {
-//            System.out.println("ERROR: хранилище резюме полностью заполнено");
-            throw new StorageException("Storage Overflow", r.getUuid());
+            throw new StorageException("Storage Overflow", resume.getUuid());
         } else {
             if (index > -1) {
-//                System.out.println("ERROR: такое резюме УЖЕ существует");
-                throw new ExistStorageException(r.getUuid());
+                throw new ExistStorageException(resume.getUuid());
             } else {
-                doSave(r, index);
+                doSave(resume, index);
                 pointerToFirstNull++;
             }
         }
     }
 
     public void delete(String uuid) {
-        final int index = findResumeNumber(uuid);
+        final int index = findResumeIndex(uuid);
         if (index < 0) {
-//            System.out.println("ERROR: такого резюме НЕ существует");
             throw new NotExistStorageException(uuid);
         } else {
             doDelete(index);
@@ -45,9 +42,8 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        int index = findResumeNumber(uuid);
+        int index = findResumeIndex(uuid);
         if (index < 0) {
-//          System.out.println("ERROR: такого резюме НЕ существует");
             throw new NotExistStorageException(uuid);
         } else {
             return storage[index];
@@ -63,19 +59,18 @@ public abstract class AbstractArrayStorage implements Storage {
         pointerToFirstNull = 0;
     }
 
-    public void update(Resume r) {
-        final int index = findResumeNumber(r.getUuid());
+    public void update(Resume resume) {
+        final int index = findResumeIndex(resume.getUuid());
         if (index < 0) {
-//          System.out.println("ERROR: такого резюме НЕ существует");
-            throw new NotExistStorageException(r.getUuid());
+            throw new NotExistStorageException(resume.getUuid());
         } else {
-            storage[index] = r;
+            storage[index] = resume;
         }
     }
 
-    protected abstract int findResumeNumber(String uuid);
+    protected abstract int findResumeIndex(String uuid);
 
-    protected abstract void doSave(Resume r, int index);
+    protected abstract void doSave(Resume resume, int index);
 
     protected abstract void doDelete(int index);
 }

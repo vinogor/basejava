@@ -8,14 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 import model.Resume;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractArrayStorageTest {
 
     private Storage storage;
 
-    public AbstractArrayStorageTest(Storage storage) {
+    AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -68,7 +68,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() {
-        storage.delete("blabla");
+        storage.delete("not_existing_uuid");
     }
 
     @Test
@@ -85,15 +85,14 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() {
-        storage.get("dummy");
+        storage.get("not_existing_uuid");
     }
 
     @Test
     public void getAll() {
         Resume[] array = storage.getAll();
-        assertTrue(resume1 == array[0]);
-        assertTrue(resume2 == array[1]);
-        assertTrue(resume3 == array[2]);
+        Resume[] arrayExpected = {resume1, resume2, resume3};
+        assertArrayEquals(array, arrayExpected);
     }
 
     @Test
@@ -106,12 +105,12 @@ public abstract class AbstractArrayStorageTest {
     public void update() {
         Resume newResume = new Resume(UUID_1);
         storage.update(newResume);
-        Assert.assertTrue(newResume == storage.get("uuid1"));
+        Assert.assertSame(newResume, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        Resume newResume = new Resume("blabla");
+        Resume newResume = new Resume("not_existing_uuid");
         storage.update(newResume);
     }
 }

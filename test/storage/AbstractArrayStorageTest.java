@@ -10,6 +10,7 @@ import model.Resume;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public abstract class AbstractArrayStorageTest {
@@ -50,15 +51,16 @@ public abstract class AbstractArrayStorageTest {
         storage.save(resume1);
     }
 
-    @Test
+    @Test(expected = StorageException.class)
     public void saveOverflow() {
-        for (int i = 4; i < STORAGE_LIMIT + 1; i++) {
-            storage.save(new Resume(Integer.toString(i)));
-        }
         try {
-            storage.save(new Resume(Integer.toString(STORAGE_LIMIT + 1)));
+            for (int i = 4; i < STORAGE_LIMIT + 1; i++) {
+                storage.save(new Resume(Integer.toString(i)));
+            }
         } catch (StorageException e) {
+            fail();
         }
+        storage.save(new Resume(Integer.toString(STORAGE_LIMIT + 1)));
     }
 
     @Test

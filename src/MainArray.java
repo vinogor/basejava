@@ -1,5 +1,6 @@
 import model.Resume;
 import storage.ListStorage;
+import storage.MapStorage;
 import storage.SortedArrayStorage;
 import storage.Storage;
 
@@ -14,7 +15,7 @@ import java.io.InputStreamReader;
 
 public class MainArray {
  // private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
-  private final static Storage ARRAY_STORAGE = new ListStorage();
+  private final static Storage ARRAY_STORAGE = new MapStorage();
 
 
     public static void main(String[] args) throws IOException {

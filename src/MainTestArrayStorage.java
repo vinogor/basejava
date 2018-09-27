@@ -1,14 +1,11 @@
 import model.Resume;
-import storage.ArrayStorage;
-import storage.ListStorage;
-import storage.SortedArrayStorage;
-import storage.Storage;
+import storage.*;
 
 /**
  * Test for your storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new ListStorage();
+    private final static Storage ARRAY_STORAGE = new MapStorage();
   // private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
   //  private final static Storage ARRAY_STORAGE = new ArrayStorage();
 

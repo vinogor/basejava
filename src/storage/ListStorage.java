@@ -1,7 +1,5 @@
 package storage;
 
-import exception.ExistStorageException;
-import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.ArrayList;
@@ -21,30 +19,27 @@ public class ListStorage extends AbstractStorage {
     public void update(Resume resume) {
         final int index = findResumeIndex(resume.getUuid());
         if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage.set(index, resume);
+            storageNotExist(resume.getUuid());
         }
+        storage.set(index, resume);
     }
 
     @Override
     public void save(Resume resume) {
         int index = findResumeIndex(resume.getUuid());
         if (index > -1) {
-            throw new ExistStorageException(resume.getUuid());
-        } else {
-            storage.add(resume);
+            storageExist(resume.getUuid());
         }
+        storage.add(resume);
     }
 
     @Override
     public Resume get(String uuid) {
         int index = findResumeIndex(uuid);
         if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            return storage.get(index);
+            storageNotExist(uuid);
         }
+        return storage.get(index);
     }
 
     @Override
@@ -56,10 +51,9 @@ public class ListStorage extends AbstractStorage {
     public void delete(String uuid) {
         int index = findResumeIndex(uuid);
         if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            storage.remove(index);
+            storageNotExist(uuid);
         }
+        storage.remove(index);
     }
 
     @Override
@@ -68,12 +62,11 @@ public class ListStorage extends AbstractStorage {
     }
 
     private int findResumeIndex(String uuid) {
-        int index = 0;
-        for (Resume r : storage) {
+        for (int i = 0; i < storage.size(); i++) {
+            Resume r = storage.get(i);
             if (Objects.equals(r.getUuid(), uuid)) {
-                return index;
+                return i;
             }
-            index++;
         }
         return -1;
     }

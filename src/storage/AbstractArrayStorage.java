@@ -1,7 +1,5 @@
 package storage;
 
-import exception.ExistStorageException;
-import exception.NotExistStorageException;
 import exception.StorageException;
 import model.Resume;
 
@@ -19,33 +17,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             throw new StorageException("Storage Overflow", resume.getUuid());
         } else {
             if (index > -1) {
-                throw new ExistStorageException(resume.getUuid());
-            } else {
-                doSave(resume, index);
-                pointerToFirstNull++;
+                storageExist(resume.getUuid());
             }
+            doSave(resume, index);
+            pointerToFirstNull++;
         }
     }
 
     public void delete(String uuid) {
         final int index = findResumeIndex(uuid);
         if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            doDelete(index);
-            storage[pointerToFirstNull - 1] = null;
-            pointerToFirstNull--;
+            storageNotExist(uuid);
         }
+        doDelete(index);
+        storage[pointerToFirstNull - 1] = null;
+        pointerToFirstNull--;
     }
 
 
     public Resume get(String uuid) {
         int index = findResumeIndex(uuid);
         if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            return storage[index];
+            storageNotExist(uuid);
         }
+        return storage[index];
     }
 
     public int size() {
@@ -64,10 +59,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void update(Resume resume) {
         final int index = findResumeIndex(resume.getUuid());
         if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
+            storageNotExist(resume.getUuid());
         }
+        storage[index] = resume;
     }
 
     protected abstract int findResumeIndex(String uuid);

@@ -4,11 +4,11 @@ import model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void doSave(Resume resume, int index) {
+    public void doSaveForArray(Resume resume, int index) {
         storage[pointerToFirstNull] = resume;
     }
 
-    public void doDelete(int index) {
+    public void doDeleteForArray(int index) {
         storage[index] = storage[pointerToFirstNull - 1];
     }
 

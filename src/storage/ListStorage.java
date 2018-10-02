@@ -11,35 +11,22 @@ public class ListStorage extends AbstractStorage {
     protected List<Resume> storage = new ArrayList<>();
 
     @Override
-    public void clear() {
-        storage.clear();
+    Resume doGet(int index, String uuid) {
+        return storage.get(index);
     }
 
     @Override
-    public void update(Resume resume) {
-        final int index = findResumeIndex(resume.getUuid());
-        if (index < 0) {
-            storageNotExist(resume.getUuid());
-        }
-        storage.set(index, resume);
+    void doDelete(int index, String uuid) {
+        storage.remove(index);
     }
 
     @Override
-    public void save(Resume resume) {
-        int index = findResumeIndex(resume.getUuid());
-        if (index > -1) {
-            storageExist(resume.getUuid());
-        }
+    public void doSave(Resume resume, int index, String uuid) {
         storage.add(resume);
     }
 
-    @Override
-    public Resume get(String uuid) {
-        int index = findResumeIndex(uuid);
-        if (index < 0) {
-            storageNotExist(uuid);
-        }
-        return storage.get(index);
+    public void doUpdate(Resume resume, int index, String uuid) {
+        storage.set(index, resume);
     }
 
     @Override
@@ -48,20 +35,20 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = findResumeIndex(uuid);
-        if (index < 0) {
-            storageNotExist(uuid);
-        }
-        storage.remove(index);
-    }
-
-    @Override
     public int size() {
         return storage.size();
     }
 
-    private int findResumeIndex(String uuid) {
+    @Override
+    public void clear() {
+        storage.clear();
+    }
+
+    @Override
+    void checkStorageFull(String uuid) {
+    }
+
+    int findResumeIndex(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             Resume r = storage.get(i);
             if (Objects.equals(r.getUuid(), uuid)) {

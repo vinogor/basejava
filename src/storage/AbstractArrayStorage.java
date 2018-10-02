@@ -11,44 +11,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     int pointerToFirstNull = 0;
 
-    public void save(Resume resume) {
-        final int index = findResumeIndex(resume.getUuid());
-        if (pointerToFirstNull == STORAGE_LIMIT) {
-            throw new StorageException("Storage Overflow", resume.getUuid());
-        } else {
-            if (index > -1) {
-                storageExist(resume.getUuid());
-            }
-            doSave(resume, index);
-            pointerToFirstNull++;
-        }
+    Resume doGet(int index, String uuid) {
+        return storage[index];
     }
 
-    public void delete(String uuid) {
-        final int index = findResumeIndex(uuid);
-        if (index < 0) {
-            storageNotExist(uuid);
-        }
-        doDelete(index);
+    public void doDelete(int index, String uuid) {
+        doDeleteForArray(index);
         storage[pointerToFirstNull - 1] = null;
         pointerToFirstNull--;
     }
 
-
-    public Resume get(String uuid) {
-        int index = findResumeIndex(uuid);
-        if (index < 0) {
-            storageNotExist(uuid);
-        }
-        return storage[index];
+    void doSave(Resume resume, int index, String uuid) {
+        doSaveForArray(resume, index);
+        pointerToFirstNull++;
     }
 
-    public int size() {
-        return pointerToFirstNull;
+    public void doUpdate(Resume resume, int index, String uuid) {
+        storage[index] = resume;
     }
 
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, pointerToFirstNull);
+    }
+
+    public int size() {
+        return pointerToFirstNull;
     }
 
     public void clear() {
@@ -56,17 +43,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         pointerToFirstNull = 0;
     }
 
-    public void update(Resume resume) {
-        final int index = findResumeIndex(resume.getUuid());
-        if (index < 0) {
-            storageNotExist(resume.getUuid());
+    void checkStorageFull(String uuid) {
+        if (pointerToFirstNull == STORAGE_LIMIT) {
+            throw new StorageException("Storage Overflow", uuid);
         }
-        storage[index] = resume;
     }
 
+    protected abstract void doSaveForArray(Resume resume, int index);
+    protected abstract void doDeleteForArray(int index);
     protected abstract int findResumeIndex(String uuid);
-
-    protected abstract void doSave(Resume resume, int index);
-
-    protected abstract void doDelete(int index);
 }

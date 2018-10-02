@@ -44,10 +44,6 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    void checkStorageFull(String uuid) {
-    }
-
-    @Override
     int findResumeIndex(String uuid) {
         if (storage.get(uuid) == null) {
             return -1;

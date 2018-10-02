@@ -24,7 +24,6 @@ abstract class AbstractStorage implements Storage {
 
     public void save(Resume resume) {
         String uuid = resume.getUuid();
-        checkStorageFull(uuid);
         int index = findResumeIndex(uuid);
         if (index > -1) {
             throw new ExistStorageException(uuid);
@@ -47,6 +46,5 @@ abstract class AbstractStorage implements Storage {
     abstract void doSave(Resume resume, int index, String uuid);
     abstract void doUpdate(Resume resume, int index, String uuid);
 
-    abstract void checkStorageFull(String uuid);
     abstract int findResumeIndex(String uuid);
 }

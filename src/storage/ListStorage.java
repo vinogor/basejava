@@ -44,10 +44,6 @@ public class ListStorage extends AbstractStorage {
         storage.clear();
     }
 
-    @Override
-    void checkStorageFull(String uuid) {
-    }
-
     int findResumeIndex(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             Resume r = storage.get(i);

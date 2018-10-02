@@ -22,6 +22,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     void doSave(Resume resume, int index, String uuid) {
+        if (pointerToFirstNull == STORAGE_LIMIT) {
+            throw new StorageException("Storage Overflow", uuid);
+        }
         doSaveForArray(resume, index);
         pointerToFirstNull++;
     }
@@ -41,12 +44,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void clear() {
         Arrays.fill(storage, 0, pointerToFirstNull, null);
         pointerToFirstNull = 0;
-    }
-
-    void checkStorageFull(String uuid) {
-        if (pointerToFirstNull == STORAGE_LIMIT) {
-            throw new StorageException("Storage Overflow", uuid);
-        }
     }
 
     protected abstract void doSaveForArray(Resume resume, int index);

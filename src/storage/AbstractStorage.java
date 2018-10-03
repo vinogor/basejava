@@ -7,44 +7,46 @@ import model.Resume;
 abstract class AbstractStorage implements Storage {
 
     public Resume get(String uuid) {
-        int index = findResumeIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return doGet(index, uuid);
+        Object index = getExistedIndex(uuid);
+        return doGet(index);
     }
 
     public void delete(String uuid) {
-        int index = findResumeIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        doDelete(index, uuid);
+        Object index = getExistedIndex(uuid);
+        doDelete(index);
     }
 
     public void save(Resume resume) {
-        String uuid = resume.getUuid();
-        int index = findResumeIndex(uuid);
-        if (index > -1) {
-            throw new ExistStorageException(uuid);
-        }
-        doSave(resume, index, uuid);
+        Object index = getNotExistedIndex(resume.getUuid());
+        doSave(resume, index);
     }
 
     public void update(Resume resume) {
-        String uuid = resume.getUuid();
-        int index = findResumeIndex(uuid);
-
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        doUpdate(resume, index, uuid);
+        Object index = getExistedIndex(resume.getUuid());
+        doUpdate(resume, index);
     }
 
-    abstract Resume doGet(int index, String uuid);
-    abstract void doDelete(int index, String uuid);
-    abstract void doSave(Resume resume, int index, String uuid);
-    abstract void doUpdate(Resume resume, int index, String uuid);
+    private Object getExistedIndex(String uuid) {
+        Object index = findResumeIndex(uuid);
+        if(!isResumeExist(index)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return index;
+    }
 
-    abstract int findResumeIndex(String uuid);
+    private Object getNotExistedIndex(String uuid) {
+        Object index = findResumeIndex(uuid);
+        if(isResumeExist(index)) {
+            throw new ExistStorageException(uuid);
+        }
+        return index;
+    }
+
+    abstract Resume doGet(Object index);
+    abstract void doDelete(Object index);
+    abstract void doSave(Resume resume, Object index);
+    abstract void doUpdate(Resume resume, Object index);
+
+    abstract boolean isResumeExist(Object index);
+    abstract Object findResumeIndex(String uuid);
 }

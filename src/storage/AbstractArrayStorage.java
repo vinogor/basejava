@@ -11,26 +11,29 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     int pointerToFirstNull = 0;
 
-    Resume doGet(int index, String uuid) {
-        return storage[index];
+    Resume doGet(Object index) {
+        return storage[(Integer)index];
     }
 
-    public void doDelete(int index, String uuid) {
-        doDeleteForArray(index);
+    @Override
+    public void doDelete(Object index) {
+        doDeleteForArray((Integer)index);
         storage[pointerToFirstNull - 1] = null;
         pointerToFirstNull--;
     }
 
-    void doSave(Resume resume, int index, String uuid) {
+    @Override
+    void doSave(Resume resume, Object index) {
         if (pointerToFirstNull == STORAGE_LIMIT) {
-            throw new StorageException("Storage Overflow", uuid);
+            throw new StorageException("Storage Overflow", resume.getUuid());
         }
-        doSaveForArray(resume, index);
+        doSaveForArray(resume, (Integer)index);
         pointerToFirstNull++;
     }
 
-    public void doUpdate(Resume resume, int index, String uuid) {
-        storage[index] = resume;
+    @Override
+    public void doUpdate(Resume resume, Object index) {
+        storage[(Integer)index] = resume;
     }
 
     public Resume[] getAll() {
@@ -46,7 +49,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         pointerToFirstNull = 0;
     }
 
+    @Override
+    boolean isResumeExist(Object index) {
+        return (Integer) index >= 0;
+    }
+
     protected abstract void doSaveForArray(Resume resume, int index);
     protected abstract void doDeleteForArray(int index);
-    protected abstract int findResumeIndex(String uuid);
+    protected abstract Integer findResumeIndex(String uuid);
 }

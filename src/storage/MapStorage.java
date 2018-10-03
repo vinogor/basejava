@@ -10,22 +10,22 @@ public class MapStorage extends AbstractStorage {
     protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    Resume doGet(int index, String uuid) {
-        return storage.get(uuid);
+    Resume doGet(Object index) {
+        return storage.get(index.toString());
     }
 
     @Override
-    void doDelete(int index, String uuid) {
-        storage.remove(uuid);
+    void doDelete(Object index) {
+        storage.remove(index.toString());
     }
 
     @Override
-    public void doSave(Resume resume, int index, String uuid) {
-        storage.put(uuid, resume);
+    public void doSave(Resume resume, Object index) {
+        storage.put((String)index, resume);
     }
 
-    public void doUpdate(Resume resume, int index, String uuid) {
-        storage.put(uuid, resume);
+    public void doUpdate(Resume resume, Object index) {
+        storage.put((String)index, resume);
     }
 
     @Override
@@ -44,10 +44,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    int findResumeIndex(String uuid) {
-        if (storage.get(uuid) == null) {
-            return -1;
-        } else
-        return 0;
+    boolean isResumeExist(Object index) {
+        return storage.get(index.toString()) != null;
+    }
+
+    @Override
+    String findResumeIndex(String uuid) {
+        return uuid;
     }
 }

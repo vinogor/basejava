@@ -45,7 +45,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     boolean isResumeExist(Object index) {
-        return storage.get(index.toString()) != null;
+        return storage.containsKey(index.toString());
     }
 
     @Override

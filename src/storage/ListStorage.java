@@ -31,8 +31,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(storage);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    Integer findResumeIndex(String uuid) {
+    Integer searchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             Resume r = storage.get(i);
             if (Objects.equals(r.getUuid(), uuid)) {

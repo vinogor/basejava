@@ -2,10 +2,9 @@ package storage;
 
 import model.Resume;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
     protected Map<String, Resume> storage = new HashMap<>();
 
@@ -29,8 +28,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -49,7 +48,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    String findResumeIndex(String uuid) {
+    String searchKey(String uuid) {
         return uuid;
     }
 }

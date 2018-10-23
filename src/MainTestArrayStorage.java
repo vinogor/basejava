@@ -5,7 +5,7 @@ import storage.*;
  * Test for your storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new MapStorage();
+    private final static Storage ARRAY_STORAGE = new MapUuidStorage();
   // private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
   //  private final static Storage ARRAY_STORAGE = new ArrayStorage();
 
@@ -39,7 +39,7 @@ public class MainTestArrayStorage {
 
     private static void printAll() {
         System.out.println("\nGet All");
-        for (Resume resume : ARRAY_STORAGE.getAll()) {
+        for (Resume resume : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(resume);
         }
     }

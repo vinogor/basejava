@@ -15,7 +15,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Integer findResumeIndex(String uuid) {
+    protected Integer searchKey(String uuid) {
         for (int i = 0; i < pointerToFirstNull; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

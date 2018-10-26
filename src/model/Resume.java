@@ -1,12 +1,37 @@
 package model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Resume implements Comparable<Resume> {
 
     private final String uuid;
     private final String fullName;
+  //  private List<String> contacts = new ArrayList<>();
+
+    private Map<String, Contact> contact = new HashMap<>(); // Ключ мапы = typeOfContact
+    private Map<SectionType, SectionContent> section = new HashMap<>(); // Ключ мапы = тип секции
+
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public Map<String, Contact> getContact() {
+        return contact;
+    }
+
+    public void setContact(Map<String, Contact> contact) {
+        this.contact = contact;
+    }
+
+    public Map<SectionType, SectionContent> getSection() {
+        return section;
+    }
+
+    public void setSection(Map<SectionType, SectionContent> section) {
+        this.section = section;
+    }
+
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);

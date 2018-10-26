@@ -6,35 +6,35 @@ import model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     static final int STORAGE_LIMIT = 4;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     int pointerToFirstNull = 0;
 
-    Resume doGet(Object index) {
-        return storage[(Integer)index];
+    Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
-    public void doDelete(Object index) {
-        doDeleteForArray((Integer)index);
+    public void doDelete(Integer index) {
+        doDeleteForArray(index);
         storage[pointerToFirstNull - 1] = null;
         pointerToFirstNull--;
     }
 
     @Override
-    void doSave(Resume resume, Object index) {
+    void doSave(Resume resume, Integer index) {
         if (pointerToFirstNull == STORAGE_LIMIT) {
             throw new StorageException("Storage Overflow", resume.getUuid());
         }
-        doSaveForArray(resume, (Integer)index);
+        doSaveForArray(resume, index);
         pointerToFirstNull++;
     }
 
     @Override
-    public void doUpdate(Resume resume, Object index) {
-        storage[(Integer)index] = resume;
+    public void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
@@ -52,8 +52,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    boolean isResumeExist(Object index) {
-        return (Integer) index >= 0;
+    boolean isResumeExist(Integer index) {
+        return index >= 0;
     }
 
     protected abstract void doSaveForArray(Resume resume, int index);

@@ -6,40 +6,47 @@ import model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
-abstract class AbstractStorage implements Storage {
+abstract class AbstractStorage<SK> implements Storage {
 
     public Resume get(String uuid) {
-        Object index = getExistedIndex(uuid);
+        LOG.info("Get " + uuid);
+        SK index = getExistedIndex(uuid);
         return doGet(index);
     }
 
     public void delete(String uuid) {
-        Object index = getExistedIndex(uuid);
+        LOG.info("Delete " + uuid);
+        SK index = getExistedIndex(uuid);
         doDelete(index);
     }
 
     public void save(Resume resume) {
-        Object index = getNotExistedIndex(resume.getUuid());
+        LOG.info("Save " + resume);
+        SK index = getNotExistedIndex(resume.getUuid());
         doSave(resume, index);
     }
 
     public void update(Resume resume) {
-        Object index = getExistedIndex(resume.getUuid());
+        LOG.info("Update " + resume);
+        SK index = getExistedIndex(resume.getUuid());
         doUpdate(resume, index);
     }
 
-    private Object getExistedIndex(String uuid) {
-        Object index = searchKey(uuid);
+    private SK getExistedIndex(String uuid) {
+        SK index = searchKey(uuid);
         if(!isResumeExist(index)) {
+            LOG.warning("Resume " + uuid + " not exist");
             throw new NotExistStorageException(uuid);
         }
         return index;
     }
 
-    private Object getNotExistedIndex(String uuid) {
-        Object index = searchKey(uuid);
+    private SK getNotExistedIndex(String uuid) {
+        SK index = searchKey(uuid);
         if(isResumeExist(index)) {
+            LOG.warning("Resume " + uuid + " already exist");
             throw new ExistStorageException(uuid);
         }
         return index;
@@ -47,17 +54,21 @@ abstract class AbstractStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("Get all sorted");
         List<Resume> list = doCopyAll();
         Collections.sort(list);
         return list;
     }
 
-    abstract Resume doGet(Object index);
-    abstract void doDelete(Object index);
-    abstract void doSave(Resume resume, Object index);
-    abstract void doUpdate(Resume resume, Object index);
+//    protected final Logger log = Logger.getLogger(getClass().getName());
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
+
+    abstract Resume doGet(SK index);
+    abstract void doDelete(SK index);
+    abstract void doSave(Resume resume, SK index);
+    abstract void doUpdate(Resume resume, SK index);
     abstract List<Resume> doCopyAll();
 
-    abstract boolean isResumeExist(Object index);
-    abstract Object searchKey(String uuid);
+    abstract boolean isResumeExist(SK index);
+    abstract SK searchKey(String uuid);
 }

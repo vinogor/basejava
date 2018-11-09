@@ -8,24 +8,24 @@ public class Resume implements Comparable<Resume> {
     private final String fullName;
 
 
-    private Map<String, String> contacts = new HashMap<>();
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
-    public Map<String, String> getContacts() {
+    public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
-    public void setContacts(Map<String, String> contacts) {
+    public void setContacts(Map<ContactType, String> contacts) {
         this.contacts = contacts;
     }
 
 
-    private Map<SectionType, AbstractSectionContent> sections = new EnumMap<>(SectionType.class);
+    private Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
-    public AbstractSectionContent getSection(SectionType sectionType) {
+    public AbstractSection getSection(SectionType sectionType) {
         return sections.get(sectionType);
     }
 
-    public void setSection(SectionType sectionType, AbstractSectionContent sectionContent) {
+    public void setSection(SectionType sectionType, AbstractSection sectionContent) {
         sections.put(sectionType, sectionContent);
     }
 

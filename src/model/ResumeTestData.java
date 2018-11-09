@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import static model.SectionType.*;
+import static model.ContactType.*;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -13,35 +14,35 @@ public class ResumeTestData {
 // 1
         Resume resume = new Resume("uuid_001", "Григорий Кислин");
 
-        System.out.println("Значение поля uuid и fullName:");
+        System.out.println("1 - Значение поля uuid и fullName:");
         System.out.println(resume);
         System.out.println();
 // 2
-        Map<String, String> contacts = new HashMap<>();
-        contacts.put("Тел.: ", "+7(921) 855-0482");
-        contacts.put("Skype: ", "grigory.kislin");
-        contacts.put("Почта: ", "gkislin@yandex.ru");
-        contacts.put("Профиль LinkedIn", "https://www.linkedin.com/in/gkislin");
-        contacts.put("Профиль GitHub", "https://github.com/gkislin");
-        contacts.put("Профиль Stackoverflow", "https://stackoverflow.com/users/548473/gkislin");
-        contacts.put("Домашняя страница", "http://gkislin.ru/");
+        Map<ContactType, String> contacts = new HashMap<>();
+        contacts.put(PHONE, "+7(921) 855-0482");
+        contacts.put(SKYPE, "grigory.kislin");
+        contacts.put(EMAIL, "gkislin@yandex.ru");
+        contacts.put(PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        contacts.put(PROFILE_GITHUB, "https://github.com/gkislin");
+        contacts.put(PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
+        contacts.put(HOMEPAGE, "http://gkislin.ru/");
 
         resume.setContacts(contacts);
-        System.out.println("Содержимое блока КОНТАКТЫ:");
+        System.out.println("2 - Содержимое блока КОНТАКТЫ:");
         System.out.println(resume.getContacts());
         System.out.println();
 // 3
-        SectionText objective = new SectionText("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
+        TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         resume.setSection(OBJECTIVE, objective);
 
-        System.out.println("Содержимое секции ПОЗИЦИЯ:");
+        System.out.println("3 - Содержимое секции ПОЗИЦИЯ:");
         System.out.println(resume.getSection(OBJECTIVE));
         System.out.println();
 // 4
-        SectionText personal = new SectionText("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
+        TextSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
         resume.setSection(PERSONAL, personal);
 
-        System.out.println("Содержимое секции ЛИЧНЫЕ КАЧЕСТВА:");
+        System.out.println("4 - Содержимое секции ЛИЧНЫЕ КАЧЕСТВА:");
         System.out.println(resume.getSection(OBJECTIVE));
         System.out.println();
 // 5
@@ -50,10 +51,10 @@ public class ResumeTestData {
         list.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
         list.add("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
 
-        SectionListOfText achievement = new SectionListOfText(list);
+        ListOfTextSection achievement = new ListOfTextSection(list);
         resume.setSection(ACHIEVEMENT, achievement);
 
-        System.out.println("Содержимое секции ДОСТИЖЕНИЯ:");
+        System.out.println("5 - Содержимое секции ДОСТИЖЕНИЯ:");
         System.out.println(resume.getSection(ACHIEVEMENT));
         System.out.println();
 
@@ -63,10 +64,10 @@ public class ResumeTestData {
         list2.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
         list2.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle");
 
-        SectionListOfText qualifications = new SectionListOfText(list2);
+        ListOfTextSection qualifications = new ListOfTextSection(list2);
         resume.setSection(QUALIFICATIONS, qualifications);
 
-        System.out.println("Содержимое секции КВАЛИФИКАЦИЯ:");
+        System.out.println("6 - Содержимое секции КВАЛИФИКАЦИЯ:");
         System.out.println(resume.getSection(QUALIFICATIONS));
         System.out.println();
 
@@ -87,10 +88,10 @@ public class ResumeTestData {
         content = "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
         list3.add(new DiffItems(name, link, period, headline, content));
 
-        SectionListOfDiffItems experience = new SectionListOfDiffItems(list3);
+        ListOfDiffItemsSection experience = new ListOfDiffItemsSection(list3);
         resume.setSection(EXPERIENCE, experience);
 
-        System.out.println("Содержимое секции ОПЫТ РАБОТЫ:");
+        System.out.println("7 - Содержимое секции ОПЫТ РАБОТЫ:");
         System.out.println(resume.getSection(EXPERIENCE));
         System.out.println();
 
@@ -109,10 +110,10 @@ public class ResumeTestData {
         headline = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
         list4.add(new DiffItems(name, link, period, headline, null));
 
-        SectionListOfDiffItems education = new SectionListOfDiffItems(list4);
+        ListOfDiffItemsSection education = new ListOfDiffItemsSection(list4);
         resume.setSection(EDUCATION, education);
 
-        System.out.println("Содержимое секции ОБРАЗОВАНИЕ:");
+        System.out.println("8 - Содержимое секции ОБРАЗОВАНИЕ:");
         System.out.println(resume.getSection(EDUCATION));
         System.out.println();
     }

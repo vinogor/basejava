@@ -3,11 +3,11 @@ package model;
 import java.util.List;
 import java.util.Objects;
 
-public class SectionListOfText extends AbstractSectionContent {
+public class ListOfTextSection extends AbstractSection {
 
     private List<String> listOfText;
 
-    public SectionListOfText(List<String> listOfText) {
+    public ListOfTextSection(List<String> listOfText) {
         this.listOfText = listOfText;
     }
 
@@ -23,7 +23,7 @@ public class SectionListOfText extends AbstractSectionContent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SectionListOfText that = (SectionListOfText) o;
+        ListOfTextSection that = (ListOfTextSection) o;
         return Objects.equals(listOfText, that.listOfText);
     }
 

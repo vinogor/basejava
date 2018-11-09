@@ -2,10 +2,10 @@ package model;
 
 import java.util.Objects;
 
-public class SectionText extends AbstractSectionContent {
+public class TextSection extends AbstractSection {
     private String textContent;
 
-    public SectionText(String textContent) {
+    public TextSection(String textContent) {
         this.textContent = textContent;
     }
 
@@ -21,7 +21,7 @@ public class SectionText extends AbstractSectionContent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SectionText that = (SectionText) o;
+        TextSection that = (TextSection) o;
         return Objects.equals(textContent, that.textContent);
     }
 

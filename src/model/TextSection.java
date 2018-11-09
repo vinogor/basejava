@@ -3,18 +3,18 @@ package model;
 import java.util.Objects;
 
 public class TextSection extends AbstractSection {
-    private String textContent;
+    private String content;
 
     public TextSection(String textContent) {
-        this.textContent = textContent;
+        this.content = textContent;
     }
 
-    public String getTextContent() {
-        return textContent;
+    public String getContent() {
+        return content;
     }
 
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
@@ -22,16 +22,16 @@ public class TextSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TextSection that = (TextSection) o;
-        return Objects.equals(textContent, that.textContent);
+        return Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(textContent);
+        return Objects.hash(content);
     }
 
     @Override
     public String toString() {
-        return textContent;
+        return content;
     }
 }

@@ -1,19 +1,21 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
-class DiffItems {
+public class Organization {
     private String name;
     private String link;
-    private String period;
+    private LocalDate start;
+    private LocalDate end;
     private String headline;
     private String content;
 
-
-    public DiffItems(String name, String link, String period, String headline, String content) {
+    public Organization(String name, String link, LocalDate start, LocalDate end, String headline, String content) {
         this.name = name;
         this.link = link;
-        this.period = period;
+        this.start = start;
+        this.end = end;
         this.headline = headline;
         this.content = content;
     }
@@ -34,12 +36,20 @@ class DiffItems {
         this.link = link;
     }
 
-    public String getPeriod() {
-        return period;
+    public LocalDate getStart() {
+        return start;
     }
 
-    public void setPeriod(String period) {
-        this.period = period;
+    public void setStart(LocalDate start) {
+        this.start = start;
+    }
+
+    public LocalDate getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDate end) {
+        this.end = end;
     }
 
     public String getHeadline() {
@@ -62,26 +72,27 @@ class DiffItems {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DiffItems diffItems = (DiffItems) o;
-
-        if (!name.equals(diffItems.name)) return false;
-        if (!link.equals(diffItems.link)) return false;
-        if (!period.equals(diffItems.period)) return false;
-        if (!headline.equals(diffItems.headline)) return false;
-        return content.equals(diffItems.content);
+        Organization that = (Organization) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(link, that.link) &&
+                Objects.equals(start, that.start) &&
+                Objects.equals(end, that.end) &&
+                Objects.equals(headline, that.headline) &&
+                Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, link, period, headline, content);
+        return Objects.hash(name, link, start, end, headline, content);
     }
 
     @Override
     public String toString() {
-        return "DiffItems{" +
+        return "Organization{" +
                 "name='" + name + '\'' +
                 ", link='" + link + '\'' +
-                ", period='" + period + '\'' +
+                ", start=" + start +
+                ", end=" + end +
                 ", headline='" + headline + '\'' +
                 ", content='" + content + '\'' +
                 '}';

@@ -3,18 +3,18 @@ package model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListOfDiffItemsSection extends AbstractSection {
-    private List<DiffItems> listOfDiffItems;
+public class ListOfOrganization extends AbstractSection {
+    private List<Organization> listOfDiffItems;
 
-    public ListOfDiffItemsSection(List<DiffItems> listOfDiffItems) {
+    public ListOfOrganization(List<Organization> listOfDiffItems) {
         this.listOfDiffItems = listOfDiffItems;
     }
 
-    public List<DiffItems> getListOfDiffItems() {
+    public List<Organization> getListOfDiffItems() {
         return listOfDiffItems;
     }
 
-    public void setListOfDiffItems(List<DiffItems> listOfDiffItems) {
+    public void setListOfDiffItems(List<Organization> listOfDiffItems) {
         this.listOfDiffItems = listOfDiffItems;
     }
 
@@ -22,7 +22,7 @@ public class ListOfDiffItemsSection extends AbstractSection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ListOfDiffItemsSection that = (ListOfDiffItemsSection) o;
+        ListOfOrganization that = (ListOfOrganization) o;
         return Objects.equals(listOfDiffItems, that.listOfDiffItems);
     }
 

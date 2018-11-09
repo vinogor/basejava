@@ -1,5 +1,6 @@
-package model;
+import model.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static model.SectionType.*;
@@ -69,23 +70,23 @@ public class ResumeTestData {
         System.out.println();
 
 // 7
-        List<DiffItems> list3 = new ArrayList<>();
+        List<Organization> list3 = new ArrayList<>();
+        list3.add(new Organization(
+                "Java Online Projects",
+                "http://javaops.ru/",
+                LocalDate.of(2013, 10, 1),
+                null,
+                "Автор проекта.",
+                "Создание, организация и проведение Java онлайн проектов и стажировок."));
+        list3.add(new Organization(
+                "Wrike",
+                "https://www.wrike.com/",
+                LocalDate.of(2014, 10, 1),
+                LocalDate.of(2016, 1, 1),
+                "Старший разработчик (backend)",
+                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
 
-        String name = "Java Online Projects";
-        String link = "http://javaops.ru/";
-        String period = "10/2013 - Сейчас";
-        String headline = "Автор проекта.";
-        String content = "Создание, организация и проведение Java онлайн проектов и стажировок.";
-        list3.add(new DiffItems(name, link, period, headline, content));
-
-        name = "Wrike";
-        link = "https://www.wrike.com/";
-        period = "10/2014 - 01/2016";
-        headline = "Старший разработчик (backend)";
-        content = "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.";
-        list3.add(new DiffItems(name, link, period, headline, content));
-
-        ListOfDiffItemsSection experience = new ListOfDiffItemsSection(list3);
+        ListOfOrganization experience = new ListOfOrganization(list3);
         resume.setSection(EXPERIENCE, experience);
 
         System.out.println("7 - Содержимое секции ОПЫТ РАБОТЫ:");
@@ -93,21 +94,23 @@ public class ResumeTestData {
         System.out.println();
 
 // 8
-        List<DiffItems> list4 = new ArrayList<>();
+        List<Organization> list4 = new ArrayList<>();
+        list4.add(new Organization(
+                "Coursera",
+                "https://www.coursera.org/course/progfun",
+                LocalDate.of(2013, 3, 1),
+                LocalDate.of(2013, 4, 1),
+                "\"Functional Programming Principles in Scala\" by Martin Odersky",
+                null));
+        list4.add(new Organization(
+                "Luxoft",
+                "https://www.luxoft-training.ru/kurs/obektno-orientirovannyy__analiz_is_kontseptualnoe_modelirovanie_na_uml_dlya_sistemnyh_analitikov_.html",
+                LocalDate.of(2011, 3, 1),
+                LocalDate.of(2011, 4, 1),
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
+                null));
 
-        name = "Coursera";
-        link = "https://www.coursera.org/course/progfun";
-        period = "03/2013 - 05/2013";
-        headline = "\"Functional Programming Principles in Scala\" by Martin Odersky";
-        list4.add(new DiffItems(name, link, period, headline, null));
-
-        name = "Luxoft";
-        link = "https://www.luxoft-training.ru/kurs/obektno-orientirovannyy__analiz_is_kontseptualnoe_modelirovanie_na_uml_dlya_sistemnyh_analitikov_.html";
-        period = "03/2011 - 04/2011";
-        headline = "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"";
-        list4.add(new DiffItems(name, link, period, headline, null));
-
-        ListOfDiffItemsSection education = new ListOfDiffItemsSection(list4);
+        ListOfOrganization education = new ListOfOrganization(list4);
         resume.setSection(EDUCATION, education);
 
         System.out.println("8 - Содержимое секции ОБРАЗОВАНИЕ:");

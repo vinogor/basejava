@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static model.SectionType.*;
 import static model.ContactType.*;
@@ -18,7 +15,7 @@ public class ResumeTestData {
         System.out.println(resume);
         System.out.println();
 // 2
-        Map<ContactType, String> contacts = new HashMap<>();
+        Map<ContactType, String> contacts = resume.getContacts();
         contacts.put(PHONE, "+7(921) 855-0482");
         contacts.put(SKYPE, "grigory.kislin");
         contacts.put(EMAIL, "gkislin@yandex.ru");

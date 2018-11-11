@@ -89,12 +89,12 @@ public class Organization {
     @Override
     public String toString() {
         return "Organization{" +
-                "name='" + name + '\'' +
-                ", link='" + link + '\'' +
-                ", start=" + start +
-                ", end=" + end +
-                ", headline='" + headline + '\'' +
-                ", content='" + content + '\'' +
+                 name +
+                 link +
+                 start +
+                 end +
+                 headline +
+                 content +
                 '}';
     }
 }

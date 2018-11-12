@@ -7,6 +7,7 @@ public class ListOfOrganization extends AbstractSection {
     private List<Organization> listOfDiffItems;
 
     public ListOfOrganization(List<Organization> listOfDiffItems) {
+        Objects.requireNonNull(listOfDiffItems, "listOfDiffItems must not be null");
         this.listOfDiffItems = listOfDiffItems;
     }
 

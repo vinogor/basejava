@@ -110,6 +110,20 @@ public class ResumeTestData {
                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
                 null));
 
+        list4.add(new Organization(
+                "Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
+                "http://www.ifmo.ru/ru/",
+                LocalDate.of(1987, 9, 1),
+                LocalDate.of(1993, 7, 1),
+                "Инженер (программист Fortran, C)",
+                null));
+        list4.get(2).getStage().add(new Stage(
+                LocalDate.of(1993, 9, 1),
+                LocalDate.of(1996, 7, 1),
+                "Аспирантура (программист С, С++)",
+                null));
+
+
         ListOfOrganization education = new ListOfOrganization(list4);
         resume.setSection(EDUCATION, education);
 

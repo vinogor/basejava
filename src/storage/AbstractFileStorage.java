@@ -5,6 +5,7 @@ import model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,13 +26,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     Resume doGet(File file) {
-        return null;
-        // юзать doRead - абстрактн метод, пока не реализовывать
+        try {
+            return doRead(file);
+        } catch (Exception e) {
+            throw new StorageException("File read error", file.getName(), e);
+        }
     }
 
     @Override
     void doDelete(File file) {
-        // удалить файл?
+        // удалить файл
+        try {
+            file.delete();
+        } catch (Exception e) {
+            throw new StorageException("File delete error", file.getName(), e);
+        }
     }
 
     @Override
@@ -44,17 +53,26 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
     }
 
-    protected abstract void doWrite(Resume resume, File file);
-
     @Override
     void doUpdate(Resume resume, File file) {
-        // ???
+        try {
+            doWrite(resume, file);
+        } catch (Exception e) {
+            throw new StorageException("File write error", file.getName() + resume.getUuid(), e);
+        }
     }
 
     @Override
     List<Resume> doCopyAll() {
-        // ???
-        return null;
+        File[] listOfFiles = directory.listFiles();
+        if (listOfFiles == null) {
+            throw new StorageException("Error - directory empty");
+        }
+        List<Resume> storage = new ArrayList<>();
+        for (File file: listOfFiles) {
+            storage.add(doRead(file));
+        }
+        return storage;
     }
 
     @Override
@@ -69,12 +87,22 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        // удалить все файлы в папке?
+        File[] listOfFiles = directory.listFiles();
+        if (listOfFiles == null) {
+            throw new StorageException("Error - directory already empty");
+        }
+        for (File file: listOfFiles) {
+            doDelete(file);
+        }
     }
 
     @Override
     public int size() {
-        // передать кол-во файлов в папке?
-        return 0;
+        // передать кол-во файлов в папке
+        File[] listOfFiles = directory.listFiles();
+        return listOfFiles.length;  // а что такого если вернёт ноль ?
     }
+
+    protected abstract void doWrite(Resume resume, File file);
+    protected abstract Resume doRead(File file);
 }

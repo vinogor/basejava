@@ -39,31 +39,31 @@ public abstract class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, "Name3");
         RESUME_4 = new Resume(UUID_4, "Name4");
 
-        RESUME_1.addContact(ContactType.PHONE, "+7(921) 855-0482");
-        RESUME_1.addContact(ContactType.SKYPE, "grigory.kislin");
-        RESUME_1.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-        RESUME_1.addContact(ContactType.PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        RESUME_1.addContact(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
-        RESUME_1.addContact(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
-        RESUME_1.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
+        RESUME_1.addContacts(ContactType.PHONE, "+7(921) 855-0482");
+        RESUME_1.addContacts(ContactType.SKYPE, "grigory.kislin");
+        RESUME_1.addContacts(ContactType.EMAIL, "gkislin@yandex.ru");
+        RESUME_1.addContacts(ContactType.PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        RESUME_1.addContacts(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
+        RESUME_1.addContacts(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
+        RESUME_1.addContacts(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
-        RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection(
+        RESUME_1.addSections(SectionType.OBJECTIVE, new TextSection(
                 "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"
         ));
-        RESUME_1.addSection(SectionType.PERSONAL, new TextSection(
+        RESUME_1.addSections(SectionType.PERSONAL, new TextSection(
                 "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."
         ));
-        RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListOfTextSection(
+        RESUME_1.addSections(SectionType.ACHIEVEMENT, new ListOfTextSection(
                 "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
                 "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера."
         ));
-        RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListOfTextSection(
+        RESUME_1.addSections(SectionType.QUALIFICATIONS, new ListOfTextSection(
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle"
         ));
-        RESUME_1.addSection(SectionType.EXPERIENCE, new ListOfOrganization(
+        RESUME_1.addSections(SectionType.EXPERIENCE, new ListOfOrganization(
                 new Organization("Java Online Projects",
                         "http://javaops.ru/",
                         LocalDate.of(2013, 10, 1),
@@ -78,7 +78,7 @@ public abstract class AbstractStorageTest {
                         "Старший разработчик (backend)",
                         "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
         ));
-        RESUME_1.addSection(EDUCATION, new ListOfOrganization(
+        RESUME_1.addSections(EDUCATION, new ListOfOrganization(
                 new Organization(
                         "Coursera",
                         "https://www.coursera.org/course/progfun",

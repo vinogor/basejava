@@ -42,11 +42,11 @@ public class Resume implements Comparable<Resume> {
         sections.put(sectionType, sectionContent);
     }
 
-    public void addContact(ContactType type, String value) {
-        contacts.put(type, value);
+    public void addContacts(ContactType contactType, String value) {
+        contacts.put(contactType, value);
     }
 
-    public void addSection(SectionType sectionType, AbstractSection sectionContent) {
+    public void addSections(SectionType sectionType, AbstractSection sectionContent) {
         sections.put(sectionType, sectionContent);
     }
 

@@ -2,21 +2,25 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class Organization {
     private Link homePage;
 
-    private List<Stage> stage;
+    private List<Stage> stage = new ArrayList<>();
 
     public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String headline, String content) {
         Objects.requireNonNull(startDate, "startDate must not be null");
-    //  Objects.requireNonNull(endDate, "endDate must not be null");
         Objects.requireNonNull(headline, "headline must not be null");
         this.homePage = new Link(name, url);
-        this.stage = new ArrayList<>();
         this.stage.add(new Stage(startDate, endDate, headline, content));
+    }
+
+    public Organization(Link homePage, Stage... stage) {
+        this.homePage = homePage;
+        this.stage = Arrays.asList(stage);
     }
 
     public List<Stage> getStage() {

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,6 +11,11 @@ public class ListOfTextSection extends AbstractSection {
     public ListOfTextSection(List<String> listOfText) {
         Objects.requireNonNull(listOfText, "listOfText must not be null");
         this.listOfText = listOfText;
+    }
+
+    public ListOfTextSection(String... listOfText) {
+        Objects.requireNonNull(listOfText, "listOfText must not be null");
+        this.listOfText = Arrays.asList(listOfText);
     }
 
     public List<String> getListOfItems() {

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,6 +10,11 @@ public class ListOfOrganization extends AbstractSection {
     public ListOfOrganization(List<Organization> listOfDiffItems) {
         Objects.requireNonNull(listOfDiffItems, "listOfDiffItems must not be null");
         this.listOfDiffItems = listOfDiffItems;
+    }
+
+    public ListOfOrganization(Organization... listOfDiffItems) {
+        Objects.requireNonNull(listOfDiffItems, "listOfDiffItems must not be null");
+        this.listOfDiffItems = Arrays.asList(listOfDiffItems);
     }
 
     public List<Organization> getListOfDiffItems() {

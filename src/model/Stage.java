@@ -71,11 +71,21 @@ public class Stage {
 
     @Override
     public String toString() {
-        return "\n" + "         Stage{" +
-                "start=" + start +
-                ", end=" + end +
-                ", headline='" + headline + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+        if (end == null) {
+            return "\n" + "         Stage{" +
+                    "start=" + start +
+                    ", end=сейчас" +
+                    ", headline='" + headline + '\'' +
+                    ", content='" + content + '\'' +
+                    '}';
+        } else {
+
+            return "\n" + "         Stage{" +
+                    "start=" + start +
+                    ", end=" + end +
+                    ", headline='" + headline + '\'' +
+                    ", content='" + content + '\'' +
+                    '}';
+        }
     }
 }

@@ -1,7 +1,6 @@
 package ru.vinogor;
 
 import java.io.*;
-import java.util.Objects;
 
 public class MainFile {
     public static void main(String[] args) {
@@ -30,43 +29,22 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-// =========================================
+        System.out.println("=========================================");
 
-        System.out.println();
-
-        class NameFilter implements FileFilter {
-            private String mask;
-
-            private NameFilter(String mask) {
-                this.mask = mask;
-            }
-
-            public boolean accept(File file) {
-                return file.getName().contains(mask);
-            }
-        }
-
-        File pathFile = new File(".");
-        String filterString = ".";
-
-        try {
-            FileFilter filter = new NameFilter(filterString);
-            findFiles(pathFile, filter, System.out);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        File directory = new File("../basejava/src");
+        outputAllFiles(directory);
     }
 
-    private static void findFiles(File file, FileFilter filter, PrintStream output) throws IOException {
-        if (file.isDirectory()) {
-            File[] list = file.listFiles();
-            for (int i = Objects.requireNonNull(list, "list must not be null").length; --i >= 0; ) {
-                findFiles(list[i], filter, output);
+    private static void outputAllFiles(File directory) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    outputAllFiles(file);
+                } else {
+                    System.out.println(file.getName());
+                }
             }
-        } else {
-            if (filter.accept(file))
-                output.println(file.getCanonicalPath());
         }
     }
 }
-

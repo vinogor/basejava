@@ -41,6 +41,8 @@ public abstract class AbstractStorageTest {
         RESUME_4 = new Resume(UUID_4, "Name4");
 
         fillOutResume(RESUME_1);
+        fillOutResume(RESUME_2);
+        fillOutResume(RESUME_3);
     }
 
     @Before

@@ -65,9 +65,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     List<Resume> doCopyAll() {
         File[] listOfFiles = directory.listFiles();
-        if (listOfFiles == null) {
-            throw new StorageException("Error - directory empty");
-        }
+        isDirectoryEmpty(listOfFiles);
         List<Resume> storage = new ArrayList<>();
         for (File file: listOfFiles) {
             storage.add(doRead(file));
@@ -88,9 +86,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] listOfFiles = directory.listFiles();
-        if (listOfFiles == null) {
-            throw new StorageException("Error - directory already empty");
-        }
+        isDirectoryEmpty(listOfFiles);
         for (File file: listOfFiles) {
             doDelete(file);
         }
@@ -98,9 +94,15 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        // передать кол-во файлов в папке
         File[] listOfFiles = directory.listFiles();
-        return listOfFiles.length;  // а что такого если вернёт ноль ?
+        isDirectoryEmpty(listOfFiles);
+        return listOfFiles.length;  // а что такого если вернёт ноль?
+    }
+
+    private void isDirectoryEmpty(File[] listOfFiles) {
+        if (listOfFiles == null) {
+            throw new StorageException("Error - directory already empty", directory.getName());
+        }
     }
 
     abstract void doWrite(Resume resume, File file);

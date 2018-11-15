@@ -32,17 +32,20 @@ public class MainFile {
         System.out.println("=========================================");
 
         File directory = new File("../basejava/src");
-        outputAllFiles(directory);
+        String indent = "";
+        outputAllFiles(directory, indent);
     }
 
-    private static void outputAllFiles(File directory) {
+
+    private static void outputAllFiles(File directory, String indent) {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    outputAllFiles(file);
+                    System.out.println(indent + "Dir: " + file.getName());
+                    outputAllFiles(file, (indent + "    "));
                 } else {
-                    System.out.println(file.getName());
+                    System.out.println(indent + "File: " + file.getName());
                 }
             }
         }

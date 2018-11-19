@@ -2,7 +2,10 @@ package ru.vinogor.model;
 
 import java.util.Objects;
 
-public class TextSection extends AbstractSection {
+public class TextSection extends AbstractSection  {
+
+    private static final long serialVersionUID = 1L;
+
     private String content;
 
     public TextSection(String textContent) {

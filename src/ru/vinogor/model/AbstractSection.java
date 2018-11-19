@@ -1,6 +1,7 @@
 package ru.vinogor.model;
 
-abstract class AbstractSection {
+import java.io.Serializable;
 
+abstract class AbstractSection  implements Serializable {
 
 }

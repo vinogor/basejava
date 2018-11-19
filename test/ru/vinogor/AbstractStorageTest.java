@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.vinogor.storage.Storage;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import static org.junit.Assert.*;
 import static ru.vinogor.ResumeTestData.fillOutResume;
 
 public abstract class AbstractStorageTest {
+
+    static final File STORAGE_DIR = new File("C:\\projects\\storage");
 
     Storage storage;
 
@@ -107,7 +110,7 @@ public abstract class AbstractStorageTest {
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
         storage.update(newResume);
-        Assert.assertSame(newResume, storage.get(UUID_1));
+        assertTrue(newResume.equals(storage.get(UUID_1)));
     }
 
     @Test(expected = NotExistStorageException.class)

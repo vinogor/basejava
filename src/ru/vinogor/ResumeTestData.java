@@ -6,8 +6,8 @@ import java.time.LocalDate;
 
 import static ru.vinogor.model.SectionType.EDUCATION;
 
-class ResumeTestData {
-    static void fillOutResume(Resume resume) {
+public class ResumeTestData {
+    public static void fillOutResume(Resume resume) {
 
         resume.addContacts(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContacts(ContactType.SKYPE, "grigory.kislin");

@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
+    private StrategySerialization strategy;
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory, StrategySerialization strategy) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -21,12 +22,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
+        this.strategy = strategy;
     }
 
     @Override
     Resume doGet(File file) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(file)));
+            return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File read error", file.getName(), e);
         }
@@ -52,7 +54,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     void doUpdate(Resume resume, File file) {
         try {
-            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            strategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File write error ", file.getName()+ " - " + resume.getUuid(), e);
         }
@@ -99,7 +101,4 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
         return listOfFiles.length;
     }
-
-    abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-    abstract Resume doRead(InputStream is) throws IOException;
 }

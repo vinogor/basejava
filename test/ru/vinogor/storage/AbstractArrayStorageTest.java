@@ -1,10 +1,8 @@
-package ru.vinogor;
+package ru.vinogor.storage;
 
 import ru.vinogor.exception.StorageException;
 import ru.vinogor.model.Resume;
 import org.junit.Test;
-import ru.vinogor.storage.Storage;
-import ru.vinogor.storage.AbstractArrayStorage;
 
 
 import static org.junit.Assert.fail;

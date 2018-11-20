@@ -1,6 +1,4 @@
-package ru.vinogor;
-
-import ru.vinogor.storage.SortedArrayStorage;
+package ru.vinogor.storage;
 
 public class SortedArrayStorageTest extends AbstractArrayStorageTest {
 

@@ -1,6 +1,4 @@
-package ru.vinogor;
-
-import ru.vinogor.storage.MapResumeStorage;
+package ru.vinogor.storage;
 
 public class MapResumeStorageTest extends AbstractStorageTest {
 

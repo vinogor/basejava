@@ -1,4 +1,4 @@
-package ru.vinogor;
+package ru.vinogor.storage;
 
 import ru.vinogor.exception.ExistStorageException;
 import ru.vinogor.exception.NotExistStorageException;
@@ -18,11 +18,11 @@ import static ru.vinogor.ResumeTestData.fillOutResume;
 
 public abstract class AbstractStorageTest {
 
-    static final File STORAGE_DIR = new File("C:\\projects\\storage");
+    protected static final File STORAGE_DIR = new File("d:\\прогерство\\TopJava\\basejava\\storage");
 
     Storage storage;
 
-    AbstractStorageTest(Storage storage) {
+    public AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 

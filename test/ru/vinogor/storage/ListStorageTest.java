@@ -1,6 +1,4 @@
-package ru.vinogor;
-
-import ru.vinogor.storage.ListStorage;
+package ru.vinogor.storage;
 
 public class ListStorageTest extends AbstractStorageTest {
 

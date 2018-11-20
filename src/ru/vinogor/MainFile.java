@@ -43,7 +43,7 @@ public class MainFile {
             for (File file : files) {
                 if (file.isDirectory()) {
                     System.out.println(indent + "Dir: " + file.getName());
-                    outputAllFiles(file, (indent + "    "));
+                    outputAllFiles(file, (indent + "\t"));
                 } else {
                     System.out.println(indent + "File: " + file.getName());
                 }

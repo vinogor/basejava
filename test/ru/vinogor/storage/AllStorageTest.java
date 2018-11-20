@@ -1,4 +1,4 @@
-package ru.vinogor;
+package ru.vinogor.storage;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -11,8 +11,9 @@ import org.junit.runners.Suite;
                 ListStorageTest.class,
                 MapUuidStorageTest.class,
                 MapResumeStorageTest.class,
+                FileStorageTest.class,
+                PathStorageTest.class
         })
 
 public class AllStorageTest {
-
 }

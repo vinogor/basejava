@@ -1,6 +1,4 @@
-package ru.vinogor;
-
-import ru.vinogor.storage.MapUuidStorage;
+package ru.vinogor.storage;
 
 public class MapUuidStorageTest extends AbstractStorageTest {
 

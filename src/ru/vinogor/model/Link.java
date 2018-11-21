@@ -3,7 +3,7 @@ package ru.vinogor.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Link  implements Serializable {
+public class Link implements Serializable {
     private String name;
     private String url;
 

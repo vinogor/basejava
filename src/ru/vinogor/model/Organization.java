@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Organization  implements Serializable {
+public class Organization implements Serializable {
     private Link homePage;
 
     private List<Stage> stages = new ArrayList<>();

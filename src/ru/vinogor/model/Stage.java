@@ -3,7 +3,7 @@ package ru.vinogor.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Stage  implements Serializable {
+public class Stage implements Serializable {
     private LocalDate start;
     private LocalDate end;
     private String headline;

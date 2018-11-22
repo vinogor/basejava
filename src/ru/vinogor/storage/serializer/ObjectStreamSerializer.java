@@ -1,11 +1,11 @@
-package ru.vinogor.storage;
+package ru.vinogor.storage.serializer;
 
 import ru.vinogor.exception.StorageException;
 import ru.vinogor.model.Resume;
 
 import java.io.*;
 
-public class ObjectSerialization implements StrategySerialization {
+public class ObjectStreamSerializer implements StreamSerializer {
 
     @Override
     public Resume doRead(InputStream bufferedInputStream) throws IOException {

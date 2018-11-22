@@ -2,6 +2,7 @@ package ru.vinogor.storage;
 
 import ru.vinogor.exception.StorageException;
 import ru.vinogor.model.Resume;
+import ru.vinogor.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
-    private StrategySerialization strategy;
+    private StreamSerializer strategy;
 
-    protected FileStorage(File directory, StrategySerialization strategy) {
+    protected FileStorage(File directory, StreamSerializer strategy) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -64,7 +65,7 @@ public class FileStorage extends AbstractStorage<File> {
     List<Resume> doCopyAll() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Directory read error");
         }
         List<Resume> list = new ArrayList<>(files.length);
         for (File file : files) {
@@ -79,15 +80,15 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    File searchKey(String uuid) {
+    protected File searchKey(String uuid) {
         return new File(directory, uuid);
     }
 
     @Override
     public void clear() {
-        File[] listOfFiles = directory.listFiles();
-        if (listOfFiles != null) {
-            for (File file : listOfFiles) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
                 doDelete(file);
             }
         }
@@ -95,10 +96,10 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        String[] listOfFiles = directory.list();
-        if (listOfFiles == null) {
-            throw new StorageException("Directory read error", null);
+        String[] list = directory.list();
+        if (list == null) {
+            throw new StorageException("Directory read error");
         }
-        return listOfFiles.length;
+        return list.length;
     }
 }

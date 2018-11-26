@@ -1,15 +1,23 @@
 package ru.vinogor.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final String uuid;
-    private final String fullName;
+    private String uuid;
+    private String fullName;
     private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+
+    public Resume() {
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -18,6 +26,14 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Map<SectionType, AbstractSection> getSections() {
+        return sections;
     }
 
     public String getUuid() {
@@ -32,7 +48,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
-    public void setContacts(Map<ContactType, String> contacts) {
+    public void setContact(Map<ContactType, String> contacts) {
         this.contacts = contacts;
     }
 
@@ -44,17 +60,28 @@ public class Resume implements Comparable<Resume>, Serializable {
         sections.put(sectionType, sectionContent);
     }
 
-    public void addContacts(ContactType contactType, String value) {
+    public void addContact(ContactType contactType, String value) {
         contacts.put(contactType, value);
     }
 
-    public void addSections(SectionType sectionType, AbstractSection sectionContent) {
+    public void addSection(SectionType sectionType, AbstractSection sectionContent) {
         sections.put(sectionType, sectionContent);
     }
 
+//    @Override
+//    public String toString() {
+//        return uuid + '(' + fullName + ')';
+//    }
+
+
     @Override
     public String toString() {
-        return uuid + '(' + fullName + ')';
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
+                '}';
     }
 
     @Override

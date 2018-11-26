@@ -1,5 +1,7 @@
 package ru.vinogor.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,10 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private Link homePage;
 
     private List<Stage> stages = new ArrayList<>();
+
+    public Organization() {
+    }
 
     public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String headline, String content) {
         Objects.requireNonNull(startDate, "startDate must not be null");
@@ -28,7 +34,7 @@ public class Organization implements Serializable {
         return stages;
     }
 
-    public void setStages(ArrayList<Stage> stages) {
+    public void setStages(List<Stage> stages) {
         this.stages = stages;
     }
 

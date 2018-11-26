@@ -9,35 +9,38 @@ import static ru.vinogor.model.SectionType.EDUCATION;
 public class ResumeTestData {
     public static void fillOutResume(Resume resume) {
 
-        resume.addContacts(ContactType.PHONE, "+7(921) 855-0482");
-        resume.addContacts(ContactType.SKYPE, "grigory.kislin");
-        resume.addContacts(ContactType.EMAIL, "gkislin@yandex.ru");
-        resume.addContacts(ContactType.PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        resume.addContacts(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
-        resume.addContacts(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
-        resume.addContacts(ContactType.HOMEPAGE, "http://gkislin.ru/");
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.SKYPE, "grigory.kislin");
+        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume.addContact(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
+        resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
+        resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
-        resume.addSections(SectionType.OBJECTIVE, new TextSection(
+        resume.addSection(SectionType.OBJECTIVE, new TextSection(
                 "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"
         ));
-        resume.addSections(SectionType.PERSONAL, new TextSection(
+        resume.addSection(SectionType.PERSONAL, new TextSection(
                 "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."
         ));
-        resume.addSections(SectionType.ACHIEVEMENT, new ListOfTextSection(
+
+
+
+        resume.addSection(SectionType.ACHIEVEMENT, new ListOfTextSection(
                 "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
                 "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера."
         ));
-        resume.addSections(SectionType.QUALIFICATIONS, new ListOfTextSection(
+        resume.addSection(SectionType.QUALIFICATIONS, new ListOfTextSection(
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle"
         ));
-        resume.addSections(SectionType.EXPERIENCE, new ListOfOrganization(
+        resume.addSection(SectionType.EXPERIENCE, new ListOfOrganization(
                 new Organization("Java Online Projects",
                         "http://javaops.ru/",
                         LocalDate.of(2013, 10, 1),
-                        null,
+                        LocalDate.of(3000, 1, 1),
                         "Автор проекта.",
                         "Создание, организация и проведение Java онлайн проектов и стажировок."
                 ),
@@ -48,14 +51,14 @@ public class ResumeTestData {
                         "Старший разработчик (backend)",
                         "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
         ));
-        resume.addSections(EDUCATION, new ListOfOrganization(
+        resume.addSection(EDUCATION, new ListOfOrganization(
                 new Organization(
                         "Coursera",
                         "https://www.coursera.org/course/progfun",
                         LocalDate.of(2013, 3, 1),
                         LocalDate.of(2013, 4, 1),
                         "\"Functional Programming Principles in Scala\" by Martin Odersky",
-                        null
+                        ""
                 ),
                 new Organization(
                         "Luxoft",
@@ -63,7 +66,8 @@ public class ResumeTestData {
                         LocalDate.of(2011, 3, 1),
                         LocalDate.of(2011, 4, 1),
                         "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
-                        null
+                        ""
+
                 ),
                 new Organization(
                         new Link(
@@ -73,16 +77,20 @@ public class ResumeTestData {
                                 LocalDate.of(1987, 9, 1),
                                 LocalDate.of(1993, 7, 1),
                                 "Инженер (программист Fortran, C)",
-                                null),
+                                ""),
                         new Stage(
                                 LocalDate.of(1987, 9, 1),
                                 LocalDate.of(1993, 7, 1),
                                 "Инженер (программист Fortran, C)",
-                                null)
+                                "")
                 )
         ));
 
 
+
+
+    }
+}
 /*   ниже неудобный метод через другие конструкторы
 
 // 1
@@ -101,7 +109,7 @@ public class ResumeTestData {
         contacts.put(PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
         contacts.put(HOMEPAGE, "http://gkislin.ru/");
 
-        resume.setContacts(contacts);
+        resume.setContact(contacts);
         System.out.println("2 - Содержимое блока КОНТАКТЫ:");
         System.out.println(resume.getContacts());
         System.out.println();
@@ -209,5 +217,3 @@ public class ResumeTestData {
    */
 
 
-    }
-}

@@ -10,6 +10,9 @@ public class ListOfTextSection extends AbstractSection {
 
     private List<String> listOfText;
 
+    public ListOfTextSection() {
+    }
+
     public ListOfTextSection(List<String> listOfText) {
         Objects.requireNonNull(listOfText, "listOfText must not be null");
         this.listOfText = listOfText;

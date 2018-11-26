@@ -1,13 +1,24 @@
 package ru.vinogor.model;
 
+import ru.vinogor.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Stage implements Serializable {
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate start;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate end;
     private String headline;
     private String content;
+
+    public Stage() {
+    }
 
     public Stage(LocalDate start, LocalDate end, String headline, String content) {
         this.start = start;

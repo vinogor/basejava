@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializer {
 
+    private LocalDateAdapter localDateAdapter = new LocalDateAdapter();
+
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
@@ -22,22 +24,20 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
-            // TODO implements sections
 
             Map<SectionType, AbstractSection> sections = r.getSections();
             dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, AbstractSection> entryOfSections : sections.entrySet()) {
-                switch (entryOfSections.getKey().name()) {
+            for (Map.Entry<SectionType, AbstractSection> section : sections.entrySet()) {
+                switch (section.getKey().name()) {
                     case "OBJECTIVE":
                     case "PERSONAL":
-                        dos.writeUTF(entryOfSections.getKey().name());
-                        dos.writeUTF(((TextSection) entryOfSections.getValue()).getContent());
+                        dos.writeUTF(section.getKey().name());
+                        dos.writeUTF(((TextSection) section.getValue()).getContent());
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
-                        dos.writeUTF(entryOfSections.getKey().name());
-                        ListOfTextSection listOfTextSection = (ListOfTextSection) entryOfSections.getValue();
-                        List<String> listOfStrings = listOfTextSection.getListOfItems();
+                        dos.writeUTF(section.getKey().name());
+                        List<String> listOfStrings = ((ListOfTextSection) section.getValue()).getListOfItems();
                         dos.writeInt(listOfStrings.size());
                         for (String contentOfTextSection : listOfStrings) {
                             dos.writeUTF(contentOfTextSection);
@@ -45,9 +45,8 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":
-                        dos.writeUTF(entryOfSections.getKey().name());
-                        ListOfOrganization listOfOrganizations = (ListOfOrganization) entryOfSections.getValue();
-                        List<Organization> listOfDiffItems = listOfOrganizations.getListOfDiffItems();
+                        dos.writeUTF(section.getKey().name());
+                        List<Organization> listOfDiffItems = ((ListOfOrganization) section.getValue()).getListOfDiffItems();
                         dos.writeInt(listOfDiffItems.size());
 
                         for (Organization organization : listOfDiffItems) {
@@ -56,17 +55,17 @@ public class DataStreamSerializer implements StreamSerializer {
                             List<Stage> stages = organization.getStages();
                             dos.writeInt(stages.size());
                             for (Stage stage : stages) {
-                                LocalDateAdapter localDateAdapter = new LocalDateAdapter();
+
                                 try {
                                     dos.writeUTF(localDateAdapter.marshal(stage.getStart()));
                                 } catch (Exception e) {
-                                    System.out.println("!!!!" + e);
+                                    System.out.println("Ошибка записи: " + e);
                                 }
 
                                 try {
                                     dos.writeUTF(localDateAdapter.marshal(stage.getEnd()));
                                 } catch (Exception e) {
-                                    System.out.println("!!!!" + e);
+                                    System.out.println("Ошибка записи: " + e);
                                 }
 
                                 dos.writeUTF(stage.getHeadline());
@@ -95,11 +94,7 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            // TODO implements sections
-
             size = dis.readInt();
-            LocalDateAdapter localDateAdapter = new LocalDateAdapter();
-
             for (int i = 0; i < size; i++) {
                 switch (dis.readUTF()) {
                     case "OBJECTIVE":
@@ -127,56 +122,42 @@ public class DataStreamSerializer implements StreamSerializer {
                     case "EXPERIENCE":
                         int sizeOfOrgOfExp = dis.readInt();
                         List<Organization> listOfOrg = new ArrayList<>();
-                        for (int j = 0; j < sizeOfOrgOfExp; j++) {
-                            Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
-                            int sizeOfStages = dis.readInt();
-                            List<Stage> listOfStages = new ArrayList<>();
-                            for (int k = 0; k < sizeOfStages; k++) {
-                                try {
-                                    listOfStages.add(new Stage(
-                                            localDateAdapter.unmarshal(dis.readUTF()),
-                                            localDateAdapter.unmarshal(dis.readUTF()),
-                                            dis.readUTF(),
-                                            dis.readUTF())
-                                    );
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                organization.setStages(listOfStages);
-                            }
-                            listOfOrg.add(organization);
-                        }
+                        readOrganization(dis, localDateAdapter, sizeOfOrgOfExp, listOfOrg);
                         resume.addSection(SectionType.EXPERIENCE, new ListOfOrganization(listOfOrg));
                         break;
 
                     case "EDUCATION":
                         int sizeOfEdu = dis.readInt();
                         List<Organization> listOfEdu = new ArrayList<>();
-                        for (int j = 0; j < sizeOfEdu; j++) {
-                            Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
-                            int sizeOfStages = dis.readInt();
-                            List<Stage> listOfStages = new ArrayList<>();
-                            for (int k = 0; k < sizeOfStages; k++) {
-                                try {
-                                    listOfStages.add(new Stage(
-                                            localDateAdapter.unmarshal(dis.readUTF()),
-                                            localDateAdapter.unmarshal(dis.readUTF()),
-                                            dis.readUTF(),
-                                            dis.readUTF())
-                                    );
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                organization.setStages(listOfStages);
-                            }
-                            listOfEdu.add(organization);
-                        }
+                        readOrganization(dis, localDateAdapter, sizeOfEdu, listOfEdu);
                         resume.addSection(SectionType.EDUCATION, new ListOfOrganization(listOfEdu));
                         break;
                 }
             }
             System.out.println(resume);
             return resume;
+        }
+    }
+
+    private void readOrganization(DataInputStream dis, LocalDateAdapter localDateAdapter, int sizeOfOrgOfExp, List<Organization> listOfOrg) throws IOException {
+        for (int j = 0; j < sizeOfOrgOfExp; j++) {
+            Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
+            int sizeOfStages = dis.readInt();
+            List<Stage> listOfStages = new ArrayList<>();
+            for (int k = 0; k < sizeOfStages; k++) {
+                try {
+                    listOfStages.add(new Stage(
+                            localDateAdapter.unmarshal(dis.readUTF()),
+                            localDateAdapter.unmarshal(dis.readUTF()),
+                            dis.readUTF(),
+                            dis.readUTF())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                organization.setStages(listOfStages);
+            }
+            listOfOrg.add(organization);
         }
     }
 }

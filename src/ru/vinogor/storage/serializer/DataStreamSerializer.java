@@ -96,51 +96,42 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             size = dis.readInt();
             for (int i = 0; i < size; i++) {
-                switch (dis.readUTF()) {
-                    case "OBJECTIVE":
-                        resume.addSection(SectionType.OBJECTIVE, new TextSection(dis.readUTF()));
-                        break;
-                    case "PERSONAL":
-                        resume.addSection(SectionType.PERSONAL, new TextSection(dis.readUTF()));
-                        break;
-                    case "ACHIEVEMENT":
-                        int sizeOfAchiv = dis.readInt();
-                        List<String> listOfAchiv = new ArrayList<>();
-                        for (int j = 0; j < sizeOfAchiv; j++) {
-                            listOfAchiv.add(dis.readUTF());
-                        }
-                        resume.addSection(SectionType.ACHIEVEMENT, new ListOfTextSection(listOfAchiv));
-                        break;
-                    case "QUALIFICATIONS":
-                        int sizeOfQual = dis.readInt();
-                        List<String> listOfQual = new ArrayList<>();
-                        for (int j = 0; j < sizeOfQual; j++) {
-                            listOfQual.add(dis.readUTF());
-                        }
-                        resume.addSection(SectionType.QUALIFICATIONS, new ListOfTextSection(listOfQual));
-                        break;
-                    case "EXPERIENCE":
-                        int sizeOfOrgOfExp = dis.readInt();
-                        List<Organization> listOfOrg = new ArrayList<>();
-                        readOrganization(dis, localDateAdapter, sizeOfOrgOfExp, listOfOrg);
-                        resume.addSection(SectionType.EXPERIENCE, new ListOfOrganization(listOfOrg));
-                        break;
-
-                    case "EDUCATION":
-                        int sizeOfEdu = dis.readInt();
-                        List<Organization> listOfEdu = new ArrayList<>();
-                        readOrganization(dis, localDateAdapter, sizeOfEdu, listOfEdu);
-                        resume.addSection(SectionType.EDUCATION, new ListOfOrganization(listOfEdu));
-                        break;
-                }
+                SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                readSection(sectionType, dis, resume);
             }
             System.out.println(resume);
             return resume;
         }
     }
 
-    private void readOrganization(DataInputStream dis, LocalDateAdapter localDateAdapter, int sizeOfOrgOfExp, List<Organization> listOfOrg) throws IOException {
-        for (int j = 0; j < sizeOfOrgOfExp; j++) {
+    private void readSection(SectionType sectionType, DataInputStream dis, Resume resume) throws IOException {
+
+        switch (sectionType) {
+            case OBJECTIVE:
+            case PERSONAL:
+                resume.addSection(sectionType, new TextSection(dis.readUTF()));
+                break;
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                int sizeOfItems1 = dis.readInt();
+                List<String> listOfItems = new ArrayList<>();
+                for (int j = 0; j < sizeOfItems1; j++) {
+                    listOfItems.add(dis.readUTF());
+                }
+                resume.addSection(sectionType, new ListOfTextSection(listOfItems));
+                break;
+            case EXPERIENCE:
+            case EDUCATION:
+                List<Organization> listOfItems2 = new ArrayList<>();
+                readOrganization(dis, listOfItems2);
+                resume.addSection(sectionType, new ListOfOrganization(listOfItems2));
+                break;
+        }
+    }
+
+    private void readOrganization(DataInputStream dis, List<Organization> listOfOrg) throws IOException {
+        int sizeOfItems = dis.readInt();
+        for (int j = 0; j < sizeOfItems; j++) {
             Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
             int sizeOfStages = dis.readInt();
             List<Stage> listOfStages = new ArrayList<>();

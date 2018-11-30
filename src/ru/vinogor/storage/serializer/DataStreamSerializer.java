@@ -113,9 +113,9 @@ public class DataStreamSerializer implements StreamSerializer {
                 break;
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                int sizeOfItems1 = dis.readInt();
+                int sizeOfItems = dis.readInt();
                 List<String> listOfItems = new ArrayList<>();
-                for (int j = 0; j < sizeOfItems1; j++) {
+                for (int j = 0; j < sizeOfItems; j++) {
                     listOfItems.add(dis.readUTF());
                 }
                 resume.addSection(sectionType, new ListOfTextSection(listOfItems));

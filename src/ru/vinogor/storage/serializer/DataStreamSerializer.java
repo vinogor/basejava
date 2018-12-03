@@ -1,16 +1,12 @@
 package ru.vinogor.storage.serializer;
 
 import ru.vinogor.model.*;
-import ru.vinogor.util.LocalDateAdapter;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 public class DataStreamSerializer implements StreamSerializer {
-
-    private LocalDateAdapter localDateAdapter = new LocalDateAdapter();
 
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
@@ -19,25 +15,25 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(r.getFullName());
 
             Map<ContactType, String> contacts = r.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+
+            writeCollection(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
             Map<SectionType, AbstractSection> sections = r.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, AbstractSection> section : sections.entrySet()) {
-                switch (section.getKey().name()) {
+
+            writeCollection(dos, sections.entrySet(), entry -> {
+                SectionType sectionType = entry.getKey();
+                dos.writeUTF(sectionType.name());
+                switch (sectionType.name()) {
                     case "OBJECTIVE":
                     case "PERSONAL":
-                        dos.writeUTF(section.getKey().name());
-                        dos.writeUTF(((TextSection) section.getValue()).getContent());
+                        dos.writeUTF(((TextSection) entry.getValue()).getContent());
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
-                        dos.writeUTF(section.getKey().name());
-                        List<String> listOfStrings = ((ListOfTextSection) section.getValue()).getListOfItems();
+                        List<String> listOfStrings = ((ListOfTextSection) entry.getValue()).getListOfItems();
                         dos.writeInt(listOfStrings.size());
                         for (String contentOfTextSection : listOfStrings) {
                             dos.writeUTF(contentOfTextSection);
@@ -45,28 +41,26 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":
-                        dos.writeUTF(section.getKey().name());
-                        List<Organization> listOfDiffItems = ((ListOfOrganization) section.getValue()).getListOfDiffItems();
-                        dos.writeInt(listOfDiffItems.size());
+                        List<Organization> listOfDiffItems = ((ListOfOrganization) entry.getValue()).getListOfDiffItems();
 
-                        for (Organization organization : listOfDiffItems) {
-                            dos.writeUTF(organization.getHomePage().getName());
-                            dos.writeUTF(organization.getHomePage().getUrl());
-                            List<Stage> stages = organization.getStages();
-                            dos.writeInt(stages.size());
-                            for (Stage stage : stages) {
+                        writeCollection(dos, listOfDiffItems, subEntry -> {
 
-                                try {
-                                    dos.writeUTF(localDateAdapter.marshal(stage.getStart()));
-                                } catch (Exception e) {
-                                    System.out.println("Ошибка записи: " + e);
-                                }
+                            dos.writeUTF(subEntry.getHomePage().getName());
 
-                                try {
-                                    dos.writeUTF(localDateAdapter.marshal(stage.getEnd()));
-                                } catch (Exception e) {
-                                    System.out.println("Ошибка записи: " + e);
-                                }
+                            if (subEntry.getHomePage().getUrl() != null) {
+                                dos.writeUTF(subEntry.getHomePage().getUrl());
+                            } else {
+                                dos.writeUTF("");
+                            }
+
+                            List<Stage> stages = subEntry.getStages();
+
+                            writeCollection(dos, stages, stage -> {
+                                dos.writeInt(stage.getStart().getYear());
+                                dos.writeInt(stage.getStart().getMonth().getValue());
+
+                                dos.writeInt(stage.getEnd().getYear());
+                                dos.writeInt(stage.getEnd().getMonth().getValue());
 
                                 dos.writeUTF(stage.getHeadline());
 
@@ -75,11 +69,12 @@ public class DataStreamSerializer implements StreamSerializer {
                                 } else {
                                     dos.writeUTF("");
                                 }
-                            }
-                        }
+                            });
+
+                        });
                         break;
                 }
-            }
+            });
         }
     }
 
@@ -90,65 +85,81 @@ public class DataStreamSerializer implements StreamSerializer {
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
 
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            readCollection(dis, () -> {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            });
+
+            readCollection(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 readSection(sectionType, dis, resume);
-            }
-            System.out.println(resume);
+            });
             return resume;
         }
     }
 
     private void readSection(SectionType sectionType, DataInputStream dis, Resume resume) throws IOException {
-
         switch (sectionType) {
             case OBJECTIVE:
             case PERSONAL:
                 resume.addSection(sectionType, new TextSection(dis.readUTF()));
                 break;
+
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                int sizeOfItems = dis.readInt();
                 List<String> listOfItems = new ArrayList<>();
-                for (int j = 0; j < sizeOfItems; j++) {
+                readCollection(dis, () -> {
                     listOfItems.add(dis.readUTF());
-                }
+                });
                 resume.addSection(sectionType, new ListOfTextSection(listOfItems));
                 break;
+
             case EXPERIENCE:
             case EDUCATION:
                 List<Organization> listOfItems2 = new ArrayList<>();
-                readOrganization(dis, listOfItems2);
+                readCollection(dis, () -> {
+                    Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
+                    List<Stage> listOfStages = new ArrayList<>();
+                    readCollection(dis, () -> {
+                        try {
+                            listOfStages.add(new Stage(
+                                    LocalDate.of(dis.readInt(), dis.readInt(), 1),
+                                    LocalDate.of(dis.readInt(), dis.readInt(), 1),
+                                    dis.readUTF(),
+                                    dis.readUTF())
+                            );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        organization.setStages(listOfStages);
+                    });
+                    listOfItems2.add(organization);
+                });
                 resume.addSection(sectionType, new ListOfOrganization(listOfItems2));
                 break;
         }
     }
 
-    private void readOrganization(DataInputStream dis, List<Organization> listOfOrg) throws IOException {
-        int sizeOfItems = dis.readInt();
-        for (int j = 0; j < sizeOfItems; j++) {
-            Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
-            int sizeOfStages = dis.readInt();
-            List<Stage> listOfStages = new ArrayList<>();
-            for (int k = 0; k < sizeOfStages; k++) {
-                try {
-                    listOfStages.add(new Stage(
-                            localDateAdapter.unmarshal(dis.readUTF()),
-                            localDateAdapter.unmarshal(dis.readUTF()),
-                            dis.readUTF(),
-                            dis.readUTF())
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                organization.setStages(listOfStages);
-            }
-            listOfOrg.add(organization);
+    @FunctionalInterface
+    private interface Writer<T> {
+        void write(T t) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface Action {
+        void act() throws IOException;
+    }
+
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, Writer<T> entry) throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            entry.write(item);
+        }
+    }
+
+    private void readCollection(DataInputStream dis, Action action) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            action.act();
         }
     }
 }

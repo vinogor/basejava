@@ -14,7 +14,7 @@ public class Program {
             }
         });
 
-// ужали то что было выше до лямбды:
+// ужали то, что было выше до лямбды:
 
         System.out.println((Incrementer) x -> x + 1);
 
@@ -27,7 +27,7 @@ public class Program {
 //            }
 //        };
 
-     // тут типы не укказываем т.к. они уже есть в интерфейсе
+     // тут типы не указываем т.к. они уже есть в интерфейсе
 
         Incrementer incrementer = x -> x + 1;
         System.out.println(incrementer.increment(1));
@@ -65,6 +65,5 @@ public class Program {
 
         // стало (Класс, где лежит метод :: имя метода)
         ints.forEach(System.out::println);
-
     }
 }

@@ -1,4 +1,4 @@
-package ru.Chernoviki.lambdaMFTI;
+package ru.Chernoviki.lambdaMGTU;
 
 import java.util.ArrayList;
 import java.util.List;

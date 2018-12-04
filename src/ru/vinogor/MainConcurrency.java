@@ -15,8 +15,9 @@ public class MainConcurrency {
             public void run() {
                 synchronized (Lock1) {
                     System.out.println("Thread-1 - Lock1");
-
-                    try { Thread.sleep(10); }
+                    try {
+                        Thread.sleep(10);
+                    }
                     catch (InterruptedException e) {
                         System.out.println("Error: " + e);
                     }
@@ -31,9 +32,10 @@ public class MainConcurrency {
         private static class Thread2 extends Thread {
             public void run() {
                 synchronized (Lock2) {
-                    System.out.println("Thread-2 - holding Lock2");
-
-                    try { Thread.sleep(10); }
+                    System.out.println("Thread-2 - Lock2");
+                    try {
+                        Thread.sleep(10);
+                    }
                     catch (InterruptedException e) {
                         System.out.println("Error: " + e);
                     }

@@ -14,16 +14,16 @@ public class MainConcurrency {
         private static class Thread1 extends Thread {
             public void run() {
                 synchronized (Lock1) {
-                    System.out.println("Thread 1: Holding lock 1...");
+                    System.out.println("Thread-1 - Lock1");
 
                     try { Thread.sleep(10); }
                     catch (InterruptedException e) {
                         System.out.println("Error: " + e);
                     }
-                    System.out.println("Thread 1: Waiting for lock 2...");
+                    System.out.println("Thread-1 - waiting for Lock2");
 
                     synchronized (Lock2) {
-                        System.out.println("Thread 1: Holding lock 1 & 2...");
+                        System.out.println("Thread-1: Holding Lock1 and Lock2");
                     }
                 }
             }
@@ -31,16 +31,16 @@ public class MainConcurrency {
         private static class Thread2 extends Thread {
             public void run() {
                 synchronized (Lock2) {
-                    System.out.println("Thread 2: Holding lock 2...");
+                    System.out.println("Thread-2 - holding Lock2");
 
                     try { Thread.sleep(10); }
                     catch (InterruptedException e) {
                         System.out.println("Error: " + e);
                     }
-                    System.out.println("Thread 2: Waiting for lock 1...");
+                    System.out.println("Thread-2 - waiting for Lock1");
 
                     synchronized (Lock1) {
-                        System.out.println("Thread 2: Holding lock 1 & 2...");
+                        System.out.println("Thread-2 - holding Lock1 and Lock2");
                     }
                 }
             }

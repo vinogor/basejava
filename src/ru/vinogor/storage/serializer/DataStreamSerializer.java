@@ -34,10 +34,7 @@ public class DataStreamSerializer implements StreamSerializer {
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
                         List<String> listOfStrings = ((ListOfTextSection) entry.getValue()).getListOfItems();
-                        dos.writeInt(listOfStrings.size());
-                        for (String contentOfTextSection : listOfStrings) {
-                            dos.writeUTF(contentOfTextSection);
-                        }
+                        writeCollection(dos, listOfStrings, dos::writeUTF);
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":
@@ -85,9 +82,7 @@ public class DataStreamSerializer implements StreamSerializer {
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
 
-            readCollection(dis, () -> {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            });
+            readCollection(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
             readCollection(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
@@ -107,9 +102,7 @@ public class DataStreamSerializer implements StreamSerializer {
             case ACHIEVEMENT:
             case QUALIFICATIONS:
                 List<String> listOfItems = new ArrayList<>();
-                readCollection(dis, () -> {
-                    listOfItems.add(dis.readUTF());
-                });
+                readCollection(dis, () -> listOfItems.add(dis.readUTF()));
                 resume.addSection(sectionType, new ListOfTextSection(listOfItems));
                 break;
 
@@ -120,16 +113,12 @@ public class DataStreamSerializer implements StreamSerializer {
                     Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
                     List<Stage> listOfStages = new ArrayList<>();
                     readCollection(dis, () -> {
-                        try {
-                            listOfStages.add(new Stage(
-                                    LocalDate.of(dis.readInt(), dis.readInt(), 1),
-                                    LocalDate.of(dis.readInt(), dis.readInt(), 1),
-                                    dis.readUTF(),
-                                    dis.readUTF())
-                            );
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        listOfStages.add(new Stage(
+                                LocalDate.of(dis.readInt(), dis.readInt(), 1),
+                                LocalDate.of(dis.readInt(), dis.readInt(), 1),
+                                dis.readUTF(),
+                                dis.readUTF())
+                        );
                         organization.setStages(listOfStages);
                     });
                     listOfItems2.add(organization);

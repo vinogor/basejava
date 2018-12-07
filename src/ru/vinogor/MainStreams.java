@@ -23,7 +23,7 @@ public class MainStreams {
         return IntStream
                 .of(values)
                 .distinct()
-                .sorted()  // убираем дубли + сортируем по возрастанию
+                .sorted()
                 .reduce((s1, s2) -> s1 * 10 + s2)
                 .getAsInt();
     }

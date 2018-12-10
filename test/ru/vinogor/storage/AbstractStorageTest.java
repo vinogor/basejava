@@ -1,5 +1,6 @@
 package ru.vinogor.storage;
 
+import ru.vinogor.Config;
 import ru.vinogor.exception.ExistStorageException;
 import ru.vinogor.exception.NotExistStorageException;
 
@@ -18,7 +19,7 @@ import static ru.vinogor.ResumeTestData.fillOutResume;
 
 public abstract class AbstractStorageTest {
 
-    protected static final File STORAGE_DIR = new File("d:\\прогерство\\TopJava\\basejava\\storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     Storage storage;
 
@@ -43,9 +44,9 @@ public abstract class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, "Name3");
         RESUME_4 = new Resume(UUID_4, "Name4");
 
-        fillOutResume(RESUME_1);
-        fillOutResume(RESUME_2);
-        fillOutResume(RESUME_3);
+//        fillOutResume(RESUME_1);
+//        fillOutResume(RESUME_2);
+//        fillOutResume(RESUME_3);
     }
 
     @Before

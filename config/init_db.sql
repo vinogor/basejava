@@ -1,29 +1,16 @@
-create table resume
+CREATE TABLE resume
 (
-  uuid      char(36) not null
-    constraint resume_pkey
-    primary key,
-  full_name text     not null
+  uuid      VARCHAR(36) PRIMARY KEY NOT NULL,
+  full_name TEXT                    NOT NULL
 );
 
-alter table resume
-  owner to postgres;
-
-create table contact
+CREATE TABLE contact
 (
-  id          serial   not null
-    constraint contact_pkey
-    primary key,
-  type        text     not null,
-  value       text     not null,
-  resume_uuid char(36) not null
-    constraint contact_resume_uuid_fk
-    references resume
-    on delete cascade
+  id          SERIAL,
+  resume_uuid VARCHAR(36) NOT NULL REFERENCES resume (uuid) ON DELETE CASCADE,
+  type        TEXT        NOT NULL,
+  value       TEXT        NOT NULL
 );
 
-alter table contact
-  owner to postgres;
-
-CREATE INDEX contact_uuid_type_index
-  ON public.contact (resume_uuid, type);
+CREATE UNIQUE INDEX contact_uuid_type_index
+  ON contact (resume_uuid, type);

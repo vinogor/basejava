@@ -1,4 +1,4 @@
-package ru.Chernoviki.ZhirniToni;
+package ru.chernoviki.ZhirniToni;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

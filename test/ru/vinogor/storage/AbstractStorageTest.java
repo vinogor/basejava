@@ -1,20 +1,19 @@
 package ru.vinogor.storage;
 
+import org.junit.Before;
+import org.junit.Test;
 import ru.vinogor.Config;
 import ru.vinogor.exception.ExistStorageException;
 import ru.vinogor.exception.NotExistStorageException;
-
+import ru.vinogor.model.ContactType;
 import ru.vinogor.model.Resume;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import ru.vinogor.storage.Storage;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static ru.vinogor.ResumeTestData.fillOutResume;
 
 public abstract class AbstractStorageTest {
@@ -44,9 +43,9 @@ public abstract class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, "Name3");
         RESUME_4 = new Resume(UUID_4, "Name4");
 
-//        fillOutResume(RESUME_1);
-//        fillOutResume(RESUME_2);
-//        fillOutResume(RESUME_3);
+        fillOutResume(RESUME_1);
+        fillOutResume(RESUME_2);
+        fillOutResume(RESUME_3);
     }
 
     @Before
@@ -110,6 +109,9 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
+        newResume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        newResume.addContact(ContactType.SKYPE, "grigory.kislin");
+        newResume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
         storage.update(newResume);
         assertTrue(newResume.equals(storage.get(UUID_1)));
     }

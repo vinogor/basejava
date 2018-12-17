@@ -1,4 +1,4 @@
-package ru.Chernoviki.lambdaMGTU;
+package ru.chernoviki.lambdaMGTU;
 
 
 public class Lamp implements ElectricityConsumer {

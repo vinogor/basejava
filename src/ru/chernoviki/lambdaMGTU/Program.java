@@ -1,4 +1,4 @@
-package ru.Chernoviki.lambdaMGTU;
+package ru.chernoviki.lambdaMGTU;
 
 
 // шаблон Наблюдатель (Observer)

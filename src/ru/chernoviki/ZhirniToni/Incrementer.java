@@ -1,4 +1,4 @@
-package ru.Chernoviki.ZhirniToni;
+package ru.chernoviki.ZhirniToni;
 
 // тут есть метод increment
 // в него можно что-то передать, чтобы что-то получить

@@ -6,9 +6,7 @@ import ru.vinogor.model.Resume;
 import ru.vinogor.sql.ConnectionFactory;
 import ru.vinogor.util.SqlHelper;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,23 +68,13 @@ public class SqlStorage implements Storage {
                     try (PreparedStatement ps = conn.prepareStatement(""
                             + " INSERT INTO resume (uuid, full_name) "
                             + "      VALUES (?,?) "
-                    )
-                    ) {
+                    )) {
                         ps.setString(1, r.getUuid());
                         ps.setString(2, r.getFullName());
                         ps.execute();
                     }
-                    try (PreparedStatement ps = conn.prepareStatement(""
-                            + "INSERT INTO contact (resume_uuid, type, value) "
-                            + "     VALUES (?,?,?)")) {
-                        for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                            ps.setString(1, r.getUuid());
-                            ps.setString(2, e.getKey().name());
-                            ps.setString(3, e.getValue());
-                            ps.addBatch();
-                        }
-                        ps.executeBatch();
-                    }
+
+                    writeContact(r, conn);
                     return null;
                 }
         );
@@ -121,17 +109,7 @@ public class SqlStorage implements Storage {
                             }
                     );
 
-                    try (PreparedStatement ps = conn.prepareStatement(""
-                            + " INSERT INTO contact (resume_uuid, type, value)"
-                            + "      VALUES (?, ?, ?)")) {
-                        for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                            ps.setString(1, r.getUuid());
-                            ps.setString(2, e.getKey().name());
-                            ps.setString(3, e.getValue());
-                            ps.addBatch();
-                        }
-                        ps.executeBatch();
-                    }
+                    writeContact(r, conn);
                     return null;
                 }
         );
@@ -159,11 +137,11 @@ public class SqlStorage implements Storage {
                         ContactType type = ContactType.valueOf(rs.getString("type"));
                         String value = rs.getString("value");
 
-                        if (map.containsKey(uuid)) {
+                        if (map.containsKey(uuid)) { // если мапа с таким ключом уже есть, то
                             // добавить ещё контакт в последнее резюме
                             resumes.get(resumes.size() - 1).addContact(type, value);
                         } else {
-                            // создать новое резюме + добавить в map новую пару
+                            // создать новое резюме + добавить в него контакты + добавить в map новую пару
                             Resume newResume = new Resume(uuid, full_name);
                             newResume.addContact(type, value);
                             resumes.add(newResume);
@@ -185,5 +163,19 @@ public class SqlStorage implements Storage {
                     return !rs.next() ? 0 : rs.getInt(1);
                 }
         );
+    }
+
+    private void writeContact(Resume r, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(""
+                + " INSERT INTO contact (resume_uuid, type, value)"
+                + "      VALUES (?, ?, ?)")) {
+            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
+                ps.setString(1, r.getUuid());
+                ps.setString(2, e.getKey().name());
+                ps.setString(3, e.getValue());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        }
     }
 }

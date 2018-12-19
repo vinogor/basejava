@@ -8,7 +8,7 @@ import ru.vinogor.util.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,11 +52,8 @@ public class SqlStorage implements Storage {
                     }
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        ContactType type = ContactType.valueOf(rs.getString("type"));
-                        String value = rs.getString("value");
-                        r.addContact(type, value);
+                        readContact(rs, r);
                     } while (rs.next());
-
                     return r;
                 }
         );
@@ -102,13 +99,7 @@ public class SqlStorage implements Storage {
                             throw new NotExistStorageException(r.getUuid());
                         }
                     }
-
-                    sqlHelper.doSql("DELETE FROM contact", ps -> {
-                                ps.execute();
-                                return null;
-                            }
-                    );
-
+                    deleteContact(r, conn);
                     writeContact(r, conn);
                     return null;
                 }
@@ -127,32 +118,32 @@ public class SqlStorage implements Storage {
 
                     ResultSet rs = ps.executeQuery();
 
-                    Map<String, Resume> map = new HashMap<>();
-                    List<Resume> resumes = new ArrayList<>();
-
+                    Map<String, Resume> map = new LinkedHashMap<>();
                     while (rs.next()) {
                         String uuid = rs.getString("uuid");
                         String full_name = rs.getString("full_name");
 
-                        ContactType type = ContactType.valueOf(rs.getString("type"));
-                        String value = rs.getString("value");
-
-                        if (map.containsKey(uuid)) { // если мапа с таким ключом уже есть, то
-                            // добавить ещё контакт в последнее резюме
-                            resumes.get(resumes.size() - 1).addContact(type, value);
+                        if (map.get(uuid) == null) {
+                            Resume resume = new Resume(uuid, full_name);
+                            readContact(rs, resume);
+                            map.put(uuid, resume);
                         } else {
-                            // создать новое резюме + добавить в него контакты + добавить в map новую пару
-                            Resume newResume = new Resume(uuid, full_name);
-                            newResume.addContact(type, value);
-                            resumes.add(newResume);
-                            map.put(uuid, newResume);
+                            Resume resume = map.get(uuid);
+                            readContact(rs, resume);
+                            map.put(uuid, resume);
                         }
-                        Resume resume = new Resume();
-                        map.put(uuid, resume);
                     }
-                    return resumes;
+                    return new ArrayList<>(map.values());
                 }
         );
+    }
+
+    private void readContact(ResultSet rs, Resume resume) throws SQLException {
+        String value = rs.getString("value");
+        if (value != null) {
+            ContactType type = ContactType.valueOf(rs.getString("type"));
+            resume.addContact(type, value);
+        }
     }
 
     @Override
@@ -163,6 +154,13 @@ public class SqlStorage implements Storage {
                     return !rs.next() ? 0 : rs.getInt(1);
                 }
         );
+    }
+
+    private void deleteContact(Resume r, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
+            ps.setString(1, r.getUuid());
+            ps.execute();
+        }
     }
 
     private void writeContact(Resume r, Connection conn) throws SQLException {

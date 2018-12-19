@@ -121,9 +121,8 @@ public class SqlStorage implements Storage {
                     Map<String, Resume> map = new LinkedHashMap<>();
                     while (rs.next()) {
                         String uuid = rs.getString("uuid");
-                        String full_name = rs.getString("full_name");
-
                         if (map.get(uuid) == null) {
+                            String full_name = rs.getString("full_name");
                             Resume resume = new Resume(uuid, full_name);
                             readContact(rs, resume);
                             map.put(uuid, resume);

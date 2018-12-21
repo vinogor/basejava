@@ -6,7 +6,10 @@ import ru.vinogor.sql.ConnectionFactory;
 import ru.vinogor.util.SqlHelper;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
@@ -125,36 +128,72 @@ public class SqlStorage implements Storage {
         );
     }
 
+//    @Override
+//    public List<Resume> getAllSorted() {
+//        return sqlHelper.doSql(""
+//                        + "   SELECT * FROM resume AS r "
+//                        + "LEFT JOIN contact AS c "
+//                        + "       ON r.uuid = c.resume_uuid "
+//                        + "LEFT JOIN section AS s "
+//                        + "       ON r.uuid = s.resume_uuid "
+//                        + " ORDER BY full_name, uuid"
+//                ,
+//                ps -> {
+//
+//                    ResultSet rs = ps.executeQuery();
+//
+//                    Map<String, Resume> map = new LinkedHashMap<>();
+//                    while (rs.next()) {
+//                        String uuid = rs.getString("uuid");
+//                        Resume resume = map.get(uuid);
+//                        if (resume == null) {
+//                            String full_name = rs.getString("full_name");
+//                            resume = new Resume(uuid, full_name);
+//                        }
+//                        readContact(rs, resume);
+//                        readSection(rs, resume);
+//                        map.put(uuid, resume);
+//                    }
+//                    return new ArrayList<>(map.values());
+//                }
+//        );
+//    }
+
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.doSql(""
-                        + "   SELECT * FROM resume AS r "
-                        + "LEFT JOIN contact AS c "
-                        + "       ON r.uuid = c.resume_uuid "
-                        + "LEFT JOIN section AS s "
-                        + "       ON r.uuid = s.resume_uuid "
-                        + " ORDER BY full_name, uuid"
-                ,
-                ps -> {
+        List<Resume> resumeList = new ArrayList<>();
+        sqlHelper.transactionalExecute(connection -> {
+            try (PreparedStatement psResume = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name,uuid")) {
+                ResultSet rsResume = psResume.executeQuery();
+                Resume resume;
+                while (rsResume.next()) {
+                    String uuid = rsResume.getString("uuid");
+                    String full_name = rsResume.getString("full_name");
+                    resume = new Resume(uuid, full_name);
 
-                    ResultSet rs = ps.executeQuery();
-
-                    Map<String, Resume> map = new LinkedHashMap<>();
-                    while (rs.next()) {
-                        String uuid = rs.getString("uuid");
-                        Resume resume = map.get(uuid);
-                        if (resume == null) {
-                            String full_name = rs.getString("full_name");
-                            resume = new Resume(uuid, full_name);
+                    try (PreparedStatement psContacts = connection.prepareStatement("SELECT * FROM contact WHERE resume_uuid=?")) {
+                        psContacts.setString(1, uuid);
+                        ResultSet rsContacts = psContacts.executeQuery();
+                        while (rsContacts.next()) {
+                            readContact(rsContacts, resume);
                         }
-                        readContact(rs, resume);
-                        readSection(rs, resume);
-                        map.put(uuid, resume);
                     }
-                    return new ArrayList<>(map.values());
+
+                    try (PreparedStatement psSection = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid=?")) {
+                        psSection.setString(1, uuid);
+                        ResultSet rsSection = psSection.executeQuery();
+                        while (rsSection.next()) {
+                            readSection(rsSection, resume);
+                        }
+                    }
+                    resumeList.add(resume);
                 }
-        );
+            }
+            return null;
+        });
+        return resumeList;
     }
+
 
     private void readContact(ResultSet rs, Resume resume) throws SQLException {
         String value = rs.getString("value");

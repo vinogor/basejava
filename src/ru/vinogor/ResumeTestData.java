@@ -1,7 +1,6 @@
 package ru.vinogor;
 
-import ru.vinogor.model.ContactType;
-import ru.vinogor.model.Resume;
+import ru.vinogor.model.*;
 
 public class ResumeTestData {
     public static void fillOutResume(Resume resume) {
@@ -16,15 +15,13 @@ public class ResumeTestData {
 //        resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473/gkislin");
 //        resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
-/*
+
         resume.addSection(SectionType.OBJECTIVE, new TextSection(
                 "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"
         ));
         resume.addSection(SectionType.PERSONAL, new TextSection(
                 "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."
         ));
-
-
 
         resume.addSection(SectionType.ACHIEVEMENT, new ListOfTextSection(
                 "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
@@ -36,6 +33,9 @@ public class ResumeTestData {
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle"
         ));
+
+        /*
+
         resume.addSection(SectionType.EXPERIENCE, new ListOfOrganization(
                 new Organization("Java Online Projects",
                         "http://javaops.ru/",

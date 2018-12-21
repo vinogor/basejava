@@ -5,8 +5,7 @@ import org.junit.Test;
 import ru.vinogor.Config;
 import ru.vinogor.exception.ExistStorageException;
 import ru.vinogor.exception.NotExistStorageException;
-import ru.vinogor.model.ContactType;
-import ru.vinogor.model.Resume;
+import ru.vinogor.model.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -112,6 +111,25 @@ public abstract class AbstractStorageTest {
         newResume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         newResume.addContact(ContactType.SKYPE, "grigory.kislin");
         newResume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+
+        newResume.addSection(SectionType.OBJECTIVE, new TextSection(
+                "objective new"
+        ));
+        newResume.addSection(SectionType.PERSONAL, new TextSection(
+                "personal new"
+        ));
+
+        newResume.addSection(SectionType.ACHIEVEMENT, new ListOfTextSection(
+                "new text1",
+                "new text2",
+                "new text3"
+        ));
+        newResume.addSection(SectionType.QUALIFICATIONS, new ListOfTextSection(
+                "new text11",
+                "new text22",
+                "new text33"
+        ));
+
         storage.update(newResume);
         assertTrue(newResume.equals(storage.get(UUID_1)));
     }

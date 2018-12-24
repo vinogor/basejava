@@ -1,7 +1,7 @@
 package ru.vinogor.web;
 
+import ru.vinogor.Config;
 import ru.vinogor.model.Resume;
-import ru.vinogor.storage.SqlStorage;
 import ru.vinogor.storage.Storage;
 
 import javax.servlet.http.HttpServlet;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class ResumeServlet extends HttpServlet {
 
-    private Storage storage = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "1234");
+    private Storage storage = Config.get().getStorage();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 

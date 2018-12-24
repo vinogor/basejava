@@ -148,41 +148,18 @@ public class SqlStorage implements Storage {
                     try (PreparedStatement psContacts = connection.prepareStatement("SELECT * FROM contact")) {
                         ResultSet rsContacts = psContacts.executeQuery();
                         while (rsContacts.next()) {
-
-                            String value = rsContacts.getString("value");
-                            if (value != null) {
-                                ContactType type = ContactType.valueOf(rsContacts.getString("type"));
-                                String resume_uuid = rsContacts.getString("resume_uuid");
-                                Resume resume = resumeMap.get(resume_uuid);
-                                resume.addContact(type, value);
-                                resumeMap.put(resume_uuid, resume);
-                            }
+                            String resume_uuid = rsContacts.getString("resume_uuid");
+                            Resume resume = resumeMap.get(resume_uuid);
+                            readContact(rsContacts, resume);
                         }
                     }
 
                     try (PreparedStatement psSection = connection.prepareStatement("SELECT * FROM section")) {
                         ResultSet rsSection = psSection.executeQuery();
                         while (rsSection.next()) {
-
-                            String sectionValue = rsSection.getString("value_section");
                             String resume_uuid = rsSection.getString("resume_uuid");
                             Resume resume = resumeMap.get(resume_uuid);
-
-                            if (sectionValue != null) {
-                                SectionType sectionType = SectionType.valueOf(rsSection.getString("type_section"));
-                                switch (sectionType) {
-                                    case OBJECTIVE:
-                                    case PERSONAL:
-                                        resume.addSection(sectionType, new TextSection(sectionValue));
-                                        break;
-                                    case ACHIEVEMENT:
-                                    case QUALIFICATIONS:
-                                        resume.addSection(sectionType, new ListOfTextSection(Arrays.asList(sectionValue.split("\n"))));
-                                        break;
-                                }
-                                resumeMap.put(resume_uuid, resume);
-                            }
-
+                            readSection(rsSection, resume);
                         }
                     }
                     return null;
@@ -190,25 +167,6 @@ public class SqlStorage implements Storage {
         );
         return new ArrayList<>(resumeMap.values());
     }
-
-    private void readSection(ResultSet rs, Resume r) throws SQLException {
-        String sectionValue = rs.getString("value_section");
-        if (sectionValue != null) {
-            SectionType sectionType = SectionType.valueOf(rs.getString("type_section"));
-            switch (sectionType) {
-                case OBJECTIVE:
-                case PERSONAL:
-                    r.addSection(sectionType, new TextSection(sectionValue));
-                    break;
-
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    r.addSection(sectionType, new ListOfTextSection(Arrays.asList(sectionValue.split("\n"))));
-                    break;
-            }
-        }
-    }
-
 
     private void readContact(ResultSet rs, Resume resume) throws SQLException {
         String value = rs.getString("value");
@@ -236,6 +194,24 @@ public class SqlStorage implements Storage {
                 ps.addBatch();
             }
             ps.executeBatch();
+        }
+    }
+
+    private void readSection(ResultSet rs, Resume r) throws SQLException {
+        String sectionValue = rs.getString("value_section");
+        if (sectionValue != null) {
+            SectionType sectionType = SectionType.valueOf(rs.getString("type_section"));
+            switch (sectionType) {
+                case OBJECTIVE:
+                case PERSONAL:
+                    r.addSection(sectionType, new TextSection(sectionValue));
+                    break;
+
+                case ACHIEVEMENT:
+                case QUALIFICATIONS:
+                    r.addSection(sectionType, new ListOfTextSection(Arrays.asList(sectionValue.split("\n"))));
+                    break;
+            }
         }
     }
 

@@ -34,59 +34,59 @@ public class ResumeTestData {
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle"
         ));
 
-        /*
-
-        resume.addSection(SectionType.EXPERIENCE, new ListOfOrganization(
-                new Organization("Java Online Projects",
-                        "http://javaops.ru/",
-                        LocalDate.of(2013, 10, 1),
-                        LocalDate.of(3000, 1, 1),
-                        "Автор проекта.",
-                        "Создание, организация и проведение Java онлайн проектов и стажировок."
-                ),
-                new Organization("Wrike",
-                        "https://www.wrike.com/",
-                        LocalDate.of(2014, 10, 1),
-                        LocalDate.of(2016, 1, 1),
-                        "Старший разработчик (backend)",
-                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
-        ));
-        resume.addSection(EDUCATION, new ListOfOrganization(
-                new Organization(
-                        "Coursera",
-                        "https://www.coursera.org/course/progfun",
-                        LocalDate.of(2013, 3, 1),
-                        LocalDate.of(2013, 4, 1),
-                        "\"Functional Programming Principles in Scala\" by Martin Odersky",
-                        ""
-                ),
-                new Organization(
-                        "Luxoft",
-                        "https://www.luxoft-training.ru/kurs/obektno-orientirovannyy__analiz_is_kontseptualnoe_modelirovanie_na_uml_dlya_sistemnyh_analitikov_.html",
-                        LocalDate.of(2011, 3, 1),
-                        LocalDate.of(2011, 4, 1),
-                        "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
-                        ""
-
-                ),
-                new Organization(
-                        new Link(
-                                "Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
-                                "http://www.ifmo.ru/ru/"),
-                        new Stage(
-                                LocalDate.of(1987, 9, 1),
-                                LocalDate.of(1993, 7, 1),
-                                "Инженер (программист Fortran, C)",
-                                ""),
-                        new Stage(
-                                LocalDate.of(1987, 9, 1),
-                                LocalDate.of(1993, 7, 1),
-                                "Инженер (программист Fortran, C)",
-                                "")
-                )
-        ));
-
-*/
+//        /*
+//
+//        resume.addSection(SectionType.EXPERIENCE, new ListOfOrganization(
+//                new Organization("Java Online Projects",
+//                        "http://javaops.ru/",
+//                        LocalDate.of(2013, 10, 1),
+//                        LocalDate.of(3000, 1, 1),
+//                        "Автор проекта.",
+//                        "Создание, организация и проведение Java онлайн проектов и стажировок."
+//                ),
+//                new Organization("Wrike",
+//                        "https://www.wrike.com/",
+//                        LocalDate.of(2014, 10, 1),
+//                        LocalDate.of(2016, 1, 1),
+//                        "Старший разработчик (backend)",
+//                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
+//        ));
+//        resume.addSection(EDUCATION, new ListOfOrganization(
+//                new Organization(
+//                        "Coursera",
+//                        "https://www.coursera.org/course/progfun",
+//                        LocalDate.of(2013, 3, 1),
+//                        LocalDate.of(2013, 4, 1),
+//                        "\"Functional Programming Principles in Scala\" by Martin Odersky",
+//                        ""
+//                ),
+//                new Organization(
+//                        "Luxoft",
+//                        "https://www.luxoft-training.ru/kurs/obektno-orientirovannyy__analiz_is_kontseptualnoe_modelirovanie_na_uml_dlya_sistemnyh_analitikov_.html",
+//                        LocalDate.of(2011, 3, 1),
+//                        LocalDate.of(2011, 4, 1),
+//                        "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
+//                        ""
+//
+//                ),
+//                new Organization(
+//                        new Link(
+//                                "Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
+//                                "http://www.ifmo.ru/ru/"),
+//                        new Stage(
+//                                LocalDate.of(1987, 9, 1),
+//                                LocalDate.of(1993, 7, 1),
+//                                "Инженер (программист Fortran, C)",
+//                                ""),
+//                        new Stage(
+//                                LocalDate.of(1987, 9, 1),
+//                                LocalDate.of(1993, 7, 1),
+//                                "Инженер (программист Fortran, C)",
+//                                "")
+//                )
+//        ));
+//
+//*/
 
 
     }

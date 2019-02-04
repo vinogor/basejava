@@ -30,6 +30,11 @@ public class Organization implements Serializable {
         this.stages = Arrays.asList(stages);
     }
 
+    public Organization(Link homePage, List<Stage> stages) {
+        this.homePage = homePage;
+        this.stages = stages;
+    }
+
     public List<Stage> getStages() {
         return stages;
     }

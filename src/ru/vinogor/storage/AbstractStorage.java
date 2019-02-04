@@ -60,7 +60,6 @@ abstract class AbstractStorage<SK> implements Storage {
         return list;
     }
 
-//    protected final Logger log = Logger.getLogger(getClass().getName());
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     abstract Resume doGet(SK index);

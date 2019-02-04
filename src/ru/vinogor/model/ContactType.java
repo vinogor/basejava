@@ -1,7 +1,7 @@
 package ru.vinogor.model;
 
 public enum ContactType {
-    PHONE("Тел.: "),
+    PHONE("Тел. "),
     MOBILE("Мобильный"),
     HOME_PHONE("Домашний тел."),
 
